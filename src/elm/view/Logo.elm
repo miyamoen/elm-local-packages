@@ -1,4 +1,4 @@
-module Logo exposing (view)
+module Logo exposing (book, view)
 
 import Bibliopola exposing (..)
 import Bibliopola.Story as Story
