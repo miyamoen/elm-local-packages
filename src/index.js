@@ -34,7 +34,7 @@ const getElmJsons = async elmCachePath => {
       const elmJson = await jsonfile
         .readFile(path.join(dir, "elm.json"))
         .catch(_ => null);
-      return elmJson ? { path: dir, elmJson } : null;
+      return elmJson ? { path: dir, ...elmJson } : null;
     })
   );
   return jsons.filter(e => e);
