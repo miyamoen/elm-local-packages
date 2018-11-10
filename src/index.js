@@ -3,6 +3,7 @@ const fs = require("fs").promises;
 const path = require("path");
 const globby = require("globby");
 const jsonfile = require("jsonfile");
+const appData = require("app-data-folder");
 
 const startup = async () => {
   const app = await carlo.launch();
@@ -10,14 +11,14 @@ const startup = async () => {
   app.on("exit", () => process.exit());
   app.serveFolder(path.join(__dirname, "..", "public"));
 
-  await app.exposeObject("elmJsons", await getElmJsons(elmCachePath));
+  await app.exposeObject("elmJsons", await getElmJsons());
 
   await app.load("index.html");
 };
 
-const elmCachePath = "C:\\Users\\miyam\\AppData\\Roaming\\elm";
+const elmCachePath = process.env["ELM_HOME"] || appData("elm");
 
-const getElmJsons = async elmCachePath => {
+const getElmJsons = async () => {
   const pattern = path.join(
     elmCachePath,
     "0.19.0",

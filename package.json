@@ -11,6 +11,7 @@
   "author": "",
   "license": "BSD-3-Clause",
   "dependencies": {
+    "app-data-folder": "^1.0.0",
     "carlo": "^0.9.11",
     "globby": "^8.0.1",
     "jsonfile": "^5.0.0"

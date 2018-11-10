@@ -3,10 +3,12 @@ module Main exposing (update)
 {-| -}
 
 import Browser exposing (..)
+import Element exposing (column, fill, layout, row, width)
 import Elm.Version
 import Html exposing (div, text)
 import Json.Decode as Decode exposing (Decoder, Value)
 import List.Extra
+import PackageSummary
 import SelectList
 import Types exposing (..)
 
@@ -75,7 +77,9 @@ view model =
     , body =
         [ div [] [ text "Elmだよ" ]
         , div [] [ text <| Debug.toString model.errors ]
-        , div [] <| List.map (text << Debug.toString) model.allPackages
+        , layout [] <|
+            column [ width fill ] <|
+                List.map PackageSummary.view model.allPackages
         ]
     }
 
