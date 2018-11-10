@@ -12,35 +12,20 @@ import Types exposing (Package)
 import Url.Builder exposing (absolute)
 
 
-splitPackageName : String -> ( String, String )
-splitPackageName name =
-    case String.split "/" name of
-        author :: packageName :: [] ->
-            ( author, packageName )
-
-        _ ->
-            ( "", name )
-
-
 view : Package -> Element msg
 view package =
     let
-        { name, summary, version } =
+        { authorName, packageName, summary, version } =
             SelectList.selected package
-
-        ( author, packageName ) =
-            splitPackageName name
     in
     column
         [ paddingEach { top = 20, right = 0, bottom = 20 + 8, left = 0 }
         , spacing 8
         , width fill
-
-        -- , height <| px 50
         , Border.widthEach { bottom = 1, left = 0, right = 0, top = 0 }
         , Border.color <| rgb255 238 238 238
         ]
-        [ row [ width fill, height <| px 30 ]
+        [ wrappedRow [ width fill, height <| px 30 ]
             [ link
                 [ alignLeft
                 , Font.size 24
@@ -50,8 +35,8 @@ view package =
                     , Border.shadow { size = 1, offset = ( -1, 1 ), blur = 0, color = rgb255 234 21 122 }
                     ]
                 ]
-                { url = absolute [ "packages", author, packageName, Elm.Version.toString version ] []
-                , label = row [] [ text author, text "/", text packageName ]
+                { url = absolute [ "packages", authorName, packageName, Elm.Version.toString version ] []
+                , label = row [] [ text authorName, text "/", text packageName ]
                 }
             , row
                 [ alignRight
@@ -69,7 +54,7 @@ view package =
                 , el [ pointer ] <| text "Overview"
                 ]
             ]
-        , el [ Font.size 16, height <| px 24 ] <| text summary
+        , paragraph [ Font.size 16, height <| px 24 ] [ text summary ]
         ]
 
 

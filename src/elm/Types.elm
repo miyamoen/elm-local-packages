@@ -17,6 +17,8 @@ type alias Package =
 
 type alias PackageInfo =
     { name : String
+    , authorName : String
+    , packageName : String
     , summary : String
     , license : String
     , version : Version
