@@ -3,18 +3,18 @@ module Main exposing (update)
 {-| -}
 
 import Browser exposing (..)
+import Browser.Navigation as Nav exposing (Key)
 import Decoder
-import Element exposing (column, fill, layout, row, width)
-import Html exposing (div, text)
 import Json.Decode as Decode exposing (Value)
-import Layout
-import PackageSummary
-import Page.Packages
+import Route
 import Types exposing (..)
+import Url exposing (Url)
+import Url.Parser
+import View exposing (view)
 
 
-init : Value -> ( Model, Cmd Msg )
-init elmJsons =
+init : Value -> Url -> Key -> ( WithKey Model, Cmd Msg )
+init elmJsons url key =
     let
         ( allPackages, errors ) =
             case Decode.decodeValue Decoder.allPackages elmJsons of
@@ -24,33 +24,51 @@ init elmJsons =
                 Err decodeError ->
                     ( [], [ DecodeError decodeError ] )
     in
-    ( { allPackages = allPackages, errors = errors }, Cmd.none )
+    ( { key = key
+      , allPackages = allPackages
+      , errors = errors
+      , route =
+            Url.Parser.parse Route.route url
+                |> Maybe.withDefault Route.NotFound
+      }
+    , Cmd.none
+    )
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> WithKey Model -> ( WithKey Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        NoOp ->
+            ( model, Cmd.none )
+
+        ClickedLink (Internal url) ->
+            ( model, Nav.pushUrl model.key <| Url.toString url )
+
+        ClickedLink (External url) ->
+            ( model, Nav.load url )
+
+        UrlChanged url ->
+            ( { model
+                | route =
+                    Url.Parser.parse Route.route url
+                        |> Maybe.withDefault Route.NotFound
+              }
+            , Cmd.none
+            )
 
 
-subscriptions : Model -> Sub Msg
+subscriptions : WithKey Model -> Sub Msg
 subscriptions _ =
     Sub.none
 
 
-view : Model -> Document Msg
-view model =
-    { title = "Elm Local Packages"
-    , body =
-        [ layout [] <| Layout.view model <| Page.Packages.view model
-        ]
-    }
-
-
-main : Program Value Model Msg
+main : Program Value (WithKey Model) Msg
 main =
-    document
+    application
         { init = init
         , view = view
         , update = update
         , subscriptions = subscriptions
+        , onUrlRequest = ClickedLink
+        , onUrlChange = UrlChanged
         }

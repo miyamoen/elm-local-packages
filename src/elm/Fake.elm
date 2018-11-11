@@ -1,13 +1,14 @@
 module Fake exposing (model, package, packages)
 
 import Elm.Version as Version
+import Route exposing (Route(..))
 import SelectList
 import Types exposing (..)
 
 
 model : Model
 model =
-    { allPackages = packages, errors = [] }
+    { allPackages = packages, errors = [], route = Home }
 
 
 package : Package
