@@ -27,9 +27,7 @@ init elmJsons url key =
     ( { key = key
       , allPackages = allPackages
       , errors = errors
-      , route =
-            Url.Parser.parse Route.route url
-                |> Maybe.withDefault Route.NotFound
+      , route = Route.parse url
       }
     , Cmd.none
     )
@@ -48,13 +46,7 @@ update msg model =
             ( model, Nav.load url )
 
         UrlChanged url ->
-            ( { model
-                | route =
-                    Url.Parser.parse Route.route url
-                        |> Maybe.withDefault Route.NotFound
-              }
-            , Cmd.none
-            )
+            ( { model | route = Route.parse url }, Cmd.none )
 
 
 subscriptions : WithKey Model -> Sub Msg

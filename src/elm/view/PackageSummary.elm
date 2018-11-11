@@ -32,27 +32,35 @@ view package =
                 , Font.color <| rgb255 17 132 206
                 , mouseOver
                     [ Font.color <| rgb255 234 21 122
-                    , Border.shadow { size = 1, offset = ( -1, 1 ), blur = 0, color = rgb255 234 21 122 }
+                    , Border.shadow { size = 0, offset = ( 0, 2 ), blur = 0, color = rgb255 234 21 122 }
                     ]
                 ]
                 { url = absolute [ "packages", authorName, packageName, Elm.Version.toString version ] []
                 , label = row [] [ text authorName, text "/", text packageName ]
                 }
-            , row
+            , link
                 [ alignRight
                 , alignBottom
                 , Font.size 16
                 , Font.color <| rgb255 187 187 187
+                , pointer
+                , mouseOver
+                    [ Border.shadow { size = 0, offset = ( 0, 1 ), blur = 0, color = rgb255 187 187 187 } ]
                 ]
-                [ if SelectList.afterLength package > 1 then
-                    text "… "
+                { url = absolute [ "packages", authorName, packageName ] []
+                , label =
+                    text <|
+                        String.join " "
+                            [ if SelectList.afterLength package > 1 then
+                                "..."
 
-                  else
-                    none
-                , el [ pointer ] <| text <| Elm.Version.toString version
-                , text " — "
-                , el [ pointer ] <| text "Overview"
-                ]
+                              else
+                                ""
+                            , Elm.Version.toString version
+                            , "-"
+                            , "Overview"
+                            ]
+                }
             ]
         , paragraph [ Font.size 16, height <| px 24 ] [ text summary ]
         ]

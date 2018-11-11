@@ -16,13 +16,7 @@ import Types exposing (..)
 
 view : Model -> Element msg
 view model =
-    column
-        [ width (maximum Constant.breakPoints.large fill)
-        , paddingXY Constant.paddung 0
-        , centerX
-        ]
-    <|
-        List.map PackageSummary.view model.allPackages
+    column [] <| List.map PackageSummary.view model.allPackages
 
 
 book : Book

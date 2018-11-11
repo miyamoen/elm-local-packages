@@ -3,17 +3,42 @@ module View exposing (view)
 import Browser exposing (Document)
 import Element exposing (..)
 import Layout
+import Page.Overview
 import Page.Packages
+import Route exposing (PackageRoute(..), Route(..))
 import Types exposing (..)
 
 
 view : WithKey Model -> Document Msg
-view { errors, allPackages } =
+view { errors, allPackages, route } =
     let
         model =
-            { errors = errors, allPackages = allPackages }
+            { errors = errors, allPackages = allPackages, route = route }
     in
     { title = "Elm Local Packages"
     , body =
-        [ layout [] <| Layout.view model <| Page.Packages.view model ]
+        [ layout [] <| help model ]
     }
+
+
+help : Model -> Element Msg
+help model =
+    Layout.view model <|
+        case model.route of
+            NotFound url ->
+                text <| "TODO: NotFound " ++ url
+
+            Home ->
+                Page.Packages.view model
+
+            Packages ->
+                Page.Packages.view model
+
+            Package author package Overview ->
+                Page.Overview.view author package model
+
+            Package author package (ReadMe version) ->
+                text "handle Package _ _ (ReadMe _)"
+
+            Package author package (Module version moduleName) ->
+                text "handle Package _ _ (Module _ _)"

@@ -1,24 +1,25 @@
 module Route exposing
     ( Route(..), PackageRoute(..)
     , AuthorName, PackageName, ModuleName
-    , route
+    , route, parse
     )
 
 {-|
 
 @docs Route, PackageRoute
 @docs AuthorName, PackageName, ModuleName
-@docs route
+@docs route, parse
 
 -}
 
 import Elm.Version exposing (Version)
+import Url exposing (Url)
 import Url.Parser exposing (..)
 
 
 type Route
     = Home
-    | NotFound
+    | NotFound String
     | Packages
     | Package AuthorName PackageName PackageRoute
 
@@ -39,6 +40,12 @@ type alias PackageName =
 
 type alias ModuleName =
     String
+
+
+parse : Url -> Route
+parse url =
+    Url.Parser.parse route url
+        |> Maybe.withDefault (NotFound <| Url.toString url)
 
 
 route : Parser (Route -> a) a
