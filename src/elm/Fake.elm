@@ -1,8 +1,13 @@
-module Fake exposing (package, packages)
+module Fake exposing (model, package, packages)
 
 import Elm.Version as Version
 import SelectList
 import Types exposing (..)
+
+
+model : Model
+model =
+    { allPackages = packages, errors = [] }
 
 
 package : Package

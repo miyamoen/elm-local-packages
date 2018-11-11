@@ -1,4 +1,4 @@
-module Page.Packages exposing (view)
+module Page.Packages exposing (view, book)
 
 {-|
 
@@ -6,12 +6,30 @@ module Page.Packages exposing (view)
 
 -}
 
+import Bibliopola exposing (..)
+import Constant
 import Element exposing (..)
+import Fake
 import PackageSummary
 import Types exposing (..)
 
 
 view : Model -> Element msg
 view model =
-    column [] <|
+    column
+        [ width (maximum Constant.breakPoints.large fill)
+        , paddingXY Constant.paddung 0
+        , centerX
+        ]
+    <|
         List.map PackageSummary.view model.allPackages
+
+
+book : Book
+book =
+    bookWithFrontCover "Packages" (view Fake.model)
+
+
+main : Bibliopola.Program
+main =
+    fromBook book
