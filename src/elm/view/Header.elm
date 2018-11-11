@@ -20,8 +20,8 @@ view =
         , Border.color <| rgb255 96 181 204
         ]
         [ row
-            [ paddingXY Constant.paddung 0
-            , spacing Constant.paddung
+            [ paddingXY Constant.padding 0
+            , spacing Constant.padding
             , centerX
             , width (maximum Constant.breakPoints.large fill)
             ]

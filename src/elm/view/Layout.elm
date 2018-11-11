@@ -13,7 +13,7 @@ view model body =
         [ Header.view
         , column
             [ width (maximum Constant.breakPoints.large fill)
-            , paddingXY Constant.paddung 0
+            , paddingXY Constant.padding 0
             , centerX
             ]
             [ body ]

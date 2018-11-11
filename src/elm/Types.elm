@@ -2,6 +2,7 @@ module Types exposing
     ( WithKey, Model, Msg(..)
     , Error(..)
     , Package, PackageInfo
+    , findPackage
     )
 
 {-|
@@ -9,6 +10,7 @@ module Types exposing
 @docs WithKey, Model, Msg
 @docs Error
 @docs Package, PackageInfo
+@docs findPackage
 
 -}
 
@@ -16,6 +18,7 @@ import Browser exposing (UrlRequest)
 import Browser.Navigation exposing (Key)
 import Elm.Version exposing (Version)
 import Json.Decode as Decode
+import List.Extra
 import Route exposing (Route)
 import SelectList exposing (SelectList)
 import Url exposing (Url)
@@ -54,3 +57,20 @@ type Msg
     = NoOp
     | ClickedLink UrlRequest
     | UrlChanged Url
+
+
+
+-- functions
+
+
+findPackage : String -> String -> List Package -> Maybe Package
+findPackage authorName packageName packages =
+    List.Extra.find
+        (\versions ->
+            let
+                pkg =
+                    SelectList.selected versions
+            in
+            pkg.authorName == authorName && pkg.packageName == packageName
+        )
+        packages

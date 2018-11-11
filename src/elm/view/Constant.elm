@@ -1,4 +1,4 @@
-module Constant exposing (breakPoints, paddung)
+module Constant exposing (breakPoints, fontSize, padding)
 
 
 breakPoints : { large : number }
@@ -6,6 +6,11 @@ breakPoints =
     { large = 960 }
 
 
-paddung : number
-paddung =
+padding : number
+padding =
     20
+
+
+fontSize : number
+fontSize =
+    16

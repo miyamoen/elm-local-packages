@@ -34,11 +34,18 @@ help model =
             Packages ->
                 Page.Packages.view model
 
-            Package author package Overview ->
-                Page.Overview.view author package model
+            Package authorName packageName packageRoute ->
+                case findPackage authorName packageName model.allPackages of
+                    Just package ->
+                        case packageRoute of
+                            Overview ->
+                                Page.Overview.view package model
 
-            Package author package (ReadMe version) ->
-                text "handle Package _ _ (ReadMe _)"
+                            ReadMe version ->
+                                text "handle Package _ _ (ReadMe _)"
 
-            Package author package (Module version moduleName) ->
-                text "handle Package _ _ (Module _ _)"
+                            Module version moduleName ->
+                                text "handle Package _ _ (Module _ _)"
+
+                    Nothing ->
+                        text "package not found"
