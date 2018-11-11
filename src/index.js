@@ -11,7 +11,7 @@ const startup = async () => {
   app.on("exit", () => process.exit());
   app.serveFolder(path.join(__dirname, "..", "public"));
 
-  await app.exposeObject("elmJsons", await getElmJsons());
+  await app.exposeFunction("getElmJsons", getElmJsons);
 
   await app.load("index.html");
 };

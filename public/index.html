@@ -16,7 +16,8 @@
   <body>
     <script>
       async function start() {
-        const elmJsons = await rpc.lookup("elmJsons");
+        history.replaceState({}, "", "../");
+        const elmJsons = await getElmJsons();
         Elm.Main.init({ flags: Array.from(elmJsons) });
       }
       start();
