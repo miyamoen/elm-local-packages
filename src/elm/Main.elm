@@ -7,7 +7,9 @@ import Decoder
 import Element exposing (column, fill, layout, row, width)
 import Html exposing (div, text)
 import Json.Decode as Decode exposing (Value)
+import Layout
 import PackageSummary
+import Page.Packages
 import Types exposing (..)
 
 
@@ -39,11 +41,7 @@ view : Model -> Document Msg
 view model =
     { title = "Elm Local Packages"
     , body =
-        [ div [] [ text "Elmだよ" ]
-        , div [] [ text <| Debug.toString model.errors ]
-        , layout [] <|
-            column [ width fill ] <|
-                List.map PackageSummary.view model.allPackages
+        [ layout [] <| Layout.view model <| Page.Packages.view model
         ]
     }
 
