@@ -10,17 +10,8 @@
     <meta name="theme-color" content="#000000" />
     <link rel="shortcut icon" href="favicon.ico" />
     <script type="text/javascript" src="elm.js"></script>
+    <script type="text/javascript" src="index.js"></script>
     <title>Elm Local Packages</title>
   </head>
-
-  <body>
-    <script>
-      async function start() {
-        history.replaceState({}, "", "../");
-        const elmJsons = await getElmJsons();
-        Elm.Main.init({ flags: Array.from(elmJsons) });
-      }
-      start();
-    </script>
-  </body>
+  <body onload="start()"></body>
 </html>
