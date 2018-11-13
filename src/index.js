@@ -11,18 +11,19 @@ const startup = async () => {
   app.on("exit", () => process.exit());
   app.serveFolder(path.join(__dirname, "..", "public"));
 
-  await app.exposeFunction("getElmJsons", getElmJsons);
+  await app.exposeFunction("readElmJsons", readElmJsons);
+  await app.exposeFunction("readPackageDocs", readPackageDocs);
 
   await app.load("index.html");
 };
 
 const elmCachePath = process.env["ELM_HOME"] || appData("elm");
 
-const getElmJsons = async () => {
+const packagesDirPath = path.join(elmCachePath, "0.19.0", "package");
+
+const readElmJsons = async () => {
   const pattern = path.join(
-    elmCachePath,
-    "0.19.0",
-    "package",
+    packagesDirPath,
     "*" /** author */,
     "*" /** package */,
     "*" /** version */
@@ -39,6 +40,22 @@ const getElmJsons = async () => {
     })
   );
   return jsons.filter(e => e);
+};
+
+const readPackageDocs = async (authorName, packageName, version) => {
+  const docsDirPath = path.join(
+    packagesDirPath,
+    authorName,
+    packageName,
+    version
+  );
+
+  const readMe = await fs.readFile(path.join(docsDirPath, "REAFME.md"), "utf8");
+  const moduleDocs = await fs.readFile(
+    path.join(docsDirPath, "docs.json"),
+    "utf8"
+  );
+  return { readMe: readMe, moduleDocs: moduleDocs };
 };
 
 startup();
