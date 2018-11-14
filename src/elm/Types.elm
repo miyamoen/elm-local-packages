@@ -1,7 +1,8 @@
 module Types exposing
     ( WithKey, Model, Msg(..)
     , Error(..)
-    , Package, PackageInfo
+    , Package, PackageInfo, Docs, AllDocs
+    , Status(..)
     , findPackage
     )
 
@@ -9,16 +10,20 @@ module Types exposing
 
 @docs WithKey, Model, Msg
 @docs Error
-@docs Package, PackageInfo
+@docs Package, PackageInfo, Docs, AllDocs
+@docs Status
 @docs findPackage
 
 -}
 
 import Browser exposing (UrlRequest)
 import Browser.Navigation exposing (Key)
+import Dict exposing (Dict)
+import Elm.Docs exposing (Module)
 import Elm.Version exposing (Version)
 import Json.Decode as Decode
 import List.Extra
+import Ports exposing (DocsResponse)
 import Route exposing (Route)
 import SelectList exposing (SelectList)
 import Url exposing (Url)
@@ -29,7 +34,11 @@ type alias WithKey m =
 
 
 type alias Model =
-    { allPackages : List Package, errors : List Error, route : Route }
+    { allPackages : List Package
+    , allDocs : AllDocs
+    , errors : List Error
+    , route : Route
+    }
 
 
 type alias Package =
@@ -49,6 +58,25 @@ type alias PackageInfo =
     }
 
 
+type alias AllDocs =
+    Dict ( String, String, String ) (Status Docs)
+
+
+type alias Docs =
+    { readMe : String
+    , moduleDocs : List Module
+    , authorName : String
+    , packageName : String
+    , version : Version
+    }
+
+
+type Status a
+    = Loading
+    | Failure
+    | Success a
+
+
 type Error
     = DecodeError Decode.Error
 
@@ -57,6 +85,7 @@ type Msg
     = NoOp
     | ClickedLink UrlRequest
     | UrlChanged Url
+    | AcceptPackageDocs (Result Decode.Error DocsResponse)
 
 
 

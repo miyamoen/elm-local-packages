@@ -1,5 +1,6 @@
 module Fake exposing (model, package, packages)
 
+import Dict
 import Elm.Version as Version
 import Route exposing (Route(..))
 import SelectList
@@ -8,7 +9,7 @@ import Types exposing (..)
 
 model : Model
 model =
-    { allPackages = packages, errors = [], route = Home }
+    { allPackages = packages, allDocs = Dict.empty, errors = [], route = Home }
 
 
 package : Package

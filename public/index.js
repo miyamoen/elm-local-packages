@@ -1,7 +1,7 @@
 async function start() {
   history.replaceState({}, "", "../");
   const elmJsons = await readElmJsons();
-  const app = Elm.Main.init({ flags: Array.from(elmJsons) });
+  const app = Elm.Main.init({ flags: elmJsons });
   setupPorts(app);
 }
 

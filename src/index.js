@@ -39,7 +39,7 @@ const readElmJsons = async () => {
       return elmJson ? { path: dir, ...elmJson } : null;
     })
   );
-  return jsons.filter(e => e);
+  return Array.from(jsons.filter(e => e));
 };
 
 const readPackageDocs = async (authorName, packageName, version) => {
@@ -50,8 +50,8 @@ const readPackageDocs = async (authorName, packageName, version) => {
     version
   );
 
-  const readMe = await fs.readFile(path.join(docsDirPath, "REAFME.md"), "utf8");
-  const moduleDocs = await fs.readFile(
+  const readMe = await fs.readFile(path.join(docsDirPath, "README.md"), "utf8");
+  const moduleDocs = await jsonfile.readFile(
     path.join(docsDirPath, "docs.json"),
     "utf8"
   );

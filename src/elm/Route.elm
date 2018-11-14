@@ -1,14 +1,16 @@
 module Route exposing
     ( Route(..), PackageRoute(..)
     , AuthorName, PackageName, ModuleName
-    , route, parse
+    , routeParser, parse
+    , extractVersion
     )
 
 {-|
 
 @docs Route, PackageRoute
 @docs AuthorName, PackageName, ModuleName
-@docs route, parse
+@docs routeParser, parse
+@docs extractVersion
 
 -}
 
@@ -42,14 +44,37 @@ type alias ModuleName =
     String
 
 
+extractVersion :
+    Route
+    -> Maybe { authorName : String, packageName : String, version : Version }
+extractVersion route =
+    case route of
+        Package authorName packageName (ReadMe version) ->
+            Just
+                { authorName = authorName
+                , packageName = packageName
+                , version = version
+                }
+
+        Package authorName packageName (Module version _) ->
+            Just
+                { authorName = authorName
+                , packageName = packageName
+                , version = version
+                }
+
+        _ ->
+            Nothing
+
+
 parse : Url -> Route
 parse url =
-    Url.Parser.parse route url
+    Url.Parser.parse routeParser url
         |> Maybe.withDefault (NotFound <| Url.toString url)
 
 
-route : Parser (Route -> a) a
-route =
+routeParser : Parser (Route -> a) a
+routeParser =
     oneOf
         [ map Home top
         , s "packages" </> packages
@@ -68,13 +93,13 @@ package : Parser (PackageRoute -> a) a
 package =
     oneOf
         [ map Overview top
-        , map ReadMe version
-        , map Module (version </> moduleName)
+        , map ReadMe versionParser
+        , map Module (versionParser </> moduleName)
         ]
 
 
-version : Parser (Version -> a) a
-version =
+versionParser : Parser (Version -> a) a
+versionParser =
     custom "VERSION" Elm.Version.fromString
 
 
