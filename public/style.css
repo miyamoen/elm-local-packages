@@ -1,1 +1,63 @@
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|Source+Code+Pro");
+
+.markdown-block h1,
+.markdown-block h2,
+.markdown-block h3,
+.markdown-block h4 {
+  font-weight: normal;
+}
+
+.markdown-block p,
+.markdown-block li {
+  line-height: 1.5em;
+}
+
+.markdown-block {
+  white-space: normal;
+}
+
+.markdown-block a {
+  color: #1184ce;
+  text-decoration: none;
+}
+.markdown-block a:hover {
+  color: rgb(234, 21, 122);
+  text-decoration: underline;
+}
+
+.markdown-block pre {
+  margin: 0;
+  padding: 10px;
+  background-color: rgb(254, 254, 254);
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(245, 245, 245);
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+/* CODE */
+
+.markdown-block code {
+  font-family: "Source Code Pro", Consolas, "Liberation Mono", Menlo, Courier,
+    monospace;
+}
+
+/* I heard using :not() is slow for reflows.
+  Not really any of those on the website though AFAIK.
+  */
+.markdown-block :not(pre) > code {
+  padding: 0;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 3px;
+}
+
+.markdown-block :not(pre) > code::before,
+.markdown-block :not(pre) > code::after {
+  letter-spacing: -0.2em;
+  content: "\00a0";
+}
