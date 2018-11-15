@@ -20,6 +20,7 @@ import Route exposing (..)
 import SelectList
 import Types exposing (..)
 import Url.Builder exposing (absolute)
+import ViewUtil exposing (withCss)
 
 
 view : Model -> Element msg
@@ -66,6 +67,7 @@ book =
                     Package "arowM" "elm-reference" <|
                         ReadMe Elm.Version.one
             }
+            |> withCss
         )
 
 

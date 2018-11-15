@@ -11,8 +11,13 @@
   color: #1184ce;
   text-decoration: none;
 }
+
 .markdown-block a:hover {
   color: rgb(234, 21, 122);
+  text-decoration: underline;
+}
+
+a:hover {
   text-decoration: underline;
 }
 

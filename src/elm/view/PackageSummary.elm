@@ -10,6 +10,7 @@ import Fake
 import SelectList
 import Types exposing (Package)
 import Url.Builder exposing (absolute)
+import ViewUtil exposing (withCss)
 
 
 view : Package -> Element msg
@@ -30,10 +31,7 @@ view package =
                 [ alignLeft
                 , Font.size 24
                 , Font.color <| rgb255 17 132 206
-                , mouseOver
-                    [ Font.color <| rgb255 234 21 122
-                    , Border.shadow { size = 0, offset = ( 0, 2 ), blur = 0, color = rgb255 234 21 122 }
-                    ]
+                , mouseOver [ Font.color <| rgb255 234 21 122 ]
                 ]
                 { url = absolute [ "packages", authorName, packageName, Elm.Version.toString version ] []
                 , label = row [] [ text authorName, text "/", text packageName ]
@@ -44,8 +42,6 @@ view package =
                 , Font.size 16
                 , Font.color <| rgb255 187 187 187
                 , pointer
-                , mouseOver
-                    [ Border.shadow { size = 0, offset = ( 0, 1 ), blur = 0, color = rgb255 187 187 187 } ]
                 ]
                 { url = absolute [ "packages", authorName, packageName ] []
                 , label =
@@ -68,7 +64,7 @@ view package =
 
 book : Book
 book =
-    bookWithFrontCover "PackageSummary" (view Fake.package)
+    bookWithFrontCover "PackageSummary" (view Fake.package |> withCss)
 
 
 main : Bibliopola.Program

@@ -9,6 +9,7 @@ import Page.Packages
 import Page.ReadMe
 import Route exposing (PackageRoute(..), Route(..))
 import Types exposing (..)
+import ViewUtil exposing (rootAttributes)
 
 
 view : WithKey Model -> Document Msg
@@ -23,7 +24,7 @@ view { errors, allPackages, allDocs, route } =
     in
     { title = "Elm Local Packages"
     , body =
-        [ layout [ font, Font.color <| rgb255 41 60 75 ] <| help model ]
+        [ layout rootAttributes <| help model ]
     }
 
 

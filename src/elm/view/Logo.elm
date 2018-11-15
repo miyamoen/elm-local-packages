@@ -5,6 +5,7 @@ import Bibliopola.Story as Story
 import Element exposing (..)
 import Element.Font as Font
 import ElmLogo
+import ViewUtil exposing (withCss)
 
 
 view : Element msg
@@ -20,7 +21,7 @@ view =
 
 book : Book
 book =
-    bookWithFrontCover "Logo" view
+    bookWithFrontCover "Logo" (withCss view)
 
 
 main : Bibliopola.Program

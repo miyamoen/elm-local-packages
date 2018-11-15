@@ -16,6 +16,7 @@ import Fake
 import SelectList
 import Types exposing (..)
 import Url.Builder exposing (absolute)
+import ViewUtil exposing (withCss)
 
 
 view : Package -> Model -> Element msg
@@ -41,16 +42,7 @@ view package model =
                             SelectList.selected selected
                     in
                     link
-                        [ mouseOver
-                            [ Font.color <| rgb255 234 21 122
-                            , Border.shadow
-                                { size = 0
-                                , offset = ( 0, 1 )
-                                , blur = 0
-                                , color = rgb255 234 21 122
-                                }
-                            ]
-                        ]
+                        [ mouseOver [ Font.color <| rgb255 234 21 122 ] ]
                         { url =
                             absolute
                                 [ "packages"
@@ -69,7 +61,7 @@ view package model =
 
 book : Book
 book =
-    bookWithFrontCover "Overview" (view Fake.package Fake.model)
+    bookWithFrontCover "Overview" (view Fake.package Fake.model |> withCss)
 
 
 main : Bibliopola.Program

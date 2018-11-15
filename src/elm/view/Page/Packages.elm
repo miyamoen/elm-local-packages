@@ -12,6 +12,7 @@ import Element exposing (..)
 import Fake
 import PackageSummary
 import Types exposing (..)
+import ViewUtil exposing (withCss)
 
 
 view : Model -> Element msg
@@ -21,7 +22,7 @@ view model =
 
 book : Book
 book =
-    bookWithFrontCover "Packages" (view Fake.model)
+    bookWithFrontCover "Packages" (view Fake.model |> withCss)
 
 
 main : Bibliopola.Program

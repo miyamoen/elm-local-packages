@@ -8,6 +8,7 @@ import Element.Background as Background
 import Element.Border as Border
 import Element.Font as Font
 import Logo
+import ViewUtil exposing (withCss)
 
 
 view : Element msg
@@ -32,7 +33,7 @@ view =
 
 book : Book
 book =
-    bookWithFrontCover "Header" view
+    bookWithFrontCover "Header" (withCss view)
 
 
 main : Bibliopola.Program
