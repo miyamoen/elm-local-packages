@@ -55,7 +55,7 @@ const readPackageDocs = async (authorName, packageName, version) => {
     path.join(docsDirPath, "docs.json"),
     "utf8"
   );
-  return { readMe: readMe, moduleDocs: moduleDocs };
+  return { readMe, moduleDocs, authorName, packageName, version };
 };
 
 startup();

@@ -7,15 +7,6 @@
   font-weight: normal;
 }
 
-.markdown-block p,
-.markdown-block li {
-  line-height: 1.5em;
-}
-
-.markdown-block {
-  white-space: normal;
-}
-
 .markdown-block a {
   color: #1184ce;
   text-decoration: none;
@@ -23,6 +14,10 @@
 .markdown-block a:hover {
   color: rgb(234, 21, 122);
   text-decoration: underline;
+}
+
+.markdown-block img {
+  max-width: 100%;
 }
 
 .markdown-block pre {

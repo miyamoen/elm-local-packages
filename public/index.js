@@ -14,12 +14,7 @@ const setupPorts = app => {
         version
       );
 
-      app.ports.acceptPackageDocs.send({
-        ...packageDocs,
-        authorName: authorName,
-        packageName: packageName,
-        version: version
-      });
+      app.ports.acceptPackageDocs.send(packageDocs);
     }
   );
 };

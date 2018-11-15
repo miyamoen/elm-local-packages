@@ -24,31 +24,29 @@ import Url.Builder exposing (absolute)
 
 view : Model -> Element msg
 view { allDocs, route } =
-    el [ Font.size 16 ]
-        (Route.extractVersion route
-            |> Maybe.andThen
-                (\{ authorName, packageName, version } ->
-                    Dict.get
-                        ( authorName
-                        , packageName
-                        , Elm.Version.toString version
-                        )
-                        allDocs
-                )
-            |> Maybe.map
-                (\status ->
-                    case status of
-                        Success { readMe } ->
-                            markdown readMe
+    Route.extractVersion route
+        |> Maybe.andThen
+            (\{ authorName, packageName, version } ->
+                Dict.get
+                    ( authorName
+                    , packageName
+                    , Elm.Version.toString version
+                    )
+                    allDocs
+            )
+        |> Maybe.map
+            (\status ->
+                case status of
+                    Success { readMe } ->
+                        paragraph [ Font.size 16 ] [ markdown readMe ]
 
-                        Failure ->
-                            text "Failure"
+                    Failure ->
+                        text "Failure"
 
-                        Loading ->
-                            text "loading"
-                )
-            |> Maybe.withDefault (text "no readme")
-        )
+                    Loading ->
+                        text "loading"
+            )
+        |> Maybe.withDefault (text "no readme")
 
 
 markdown : String -> Element msg
