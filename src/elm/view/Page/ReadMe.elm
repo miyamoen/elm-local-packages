@@ -7,16 +7,12 @@ module Page.ReadMe exposing (view, book)
 -}
 
 import Bibliopola exposing (..)
-import Constant
 import Element exposing (..)
-import Element.Font as Font
 import Elm.Version
 import Fake exposing (model)
-import Html.Attributes
-import Markdown exposing (defaultOptions)
+import MarkdownBlock
 import Route exposing (..)
 import Types exposing (..)
-import Url.Builder exposing (absolute)
 import Util.AllDocs as AllDocs
 import Util.Route as Route
 import ViewUtil exposing (withCss)
@@ -30,7 +26,7 @@ view { allDocs, route } =
             (\status ->
                 case status of
                     Success { readMe } ->
-                        paragraph [ Font.size Constant.fontSize ] [ markdown readMe ]
+                        MarkdownBlock.view readMe
 
                     Failure ->
                         text "Failure"
@@ -39,14 +35,6 @@ view { allDocs, route } =
                         text "loading"
             )
         |> Maybe.withDefault (text "no readme")
-
-
-markdown : String -> Element msg
-markdown raw =
-    Markdown.toHtmlWith { defaultOptions | defaultHighlighting = Just "elm" }
-        [ Html.Attributes.class "markdown-block" ]
-        raw
-        |> html
 
 
 book : Book

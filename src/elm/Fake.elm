@@ -1,4 +1,4 @@
-module Fake exposing (model, package, packages)
+module Fake exposing (model, package, packages, readMe)
 
 import Dict
 import Elm.Version as Version
