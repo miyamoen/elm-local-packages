@@ -8,38 +8,29 @@ module Page.ReadMe exposing (view, book)
 
 import Bibliopola exposing (..)
 import Constant
-import Dict
 import Element exposing (..)
-import Element.Border as Border
 import Element.Font as Font
 import Elm.Version
 import Fake exposing (model)
 import Html.Attributes
 import Markdown exposing (defaultOptions)
 import Route exposing (..)
-import SelectList
 import Types exposing (..)
 import Url.Builder exposing (absolute)
+import Util.AllDocs as AllDocs
+import Util.Route as Route
 import ViewUtil exposing (withCss)
 
 
 view : Model -> Element msg
 view { allDocs, route } =
-    Route.extractVersion route
-        |> Maybe.andThen
-            (\{ authorName, packageName, version } ->
-                Dict.get
-                    ( authorName
-                    , packageName
-                    , Elm.Version.toString version
-                    )
-                    allDocs
-            )
+    Route.extractDocsKey route
+        |> Maybe.andThen (\key -> AllDocs.find key allDocs)
         |> Maybe.map
             (\status ->
                 case status of
                     Success { readMe } ->
-                        paragraph [ Font.size 16 ] [ markdown readMe ]
+                        paragraph [ Font.size Constant.fontSize ] [ markdown readMe ]
 
                     Failure ->
                         text "Failure"

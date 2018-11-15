@@ -9,6 +9,7 @@ import Page.Packages
 import Page.ReadMe
 import Route exposing (PackageRoute(..), Route(..))
 import Types exposing (..)
+import Util.Packages as Packages
 import ViewUtil exposing (rootAttributes)
 
 
@@ -54,7 +55,7 @@ help model =
                 Page.Packages.view model
 
             Package authorName packageName packageRoute ->
-                case findPackage authorName packageName model.allPackages of
+                case Packages.find authorName packageName model.allPackages of
                     Just package ->
                         case packageRoute of
                             Overview ->

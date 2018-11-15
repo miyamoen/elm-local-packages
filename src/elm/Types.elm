@@ -1,18 +1,18 @@
 module Types exposing
     ( WithKey, Model, Msg(..)
     , Error(..)
-    , Package, PackageInfo, Docs, AllDocs
+    , Package, PackageInfo
+    , Docs, DocsKey, AllDocs
     , Status(..)
-    , findPackage
     )
 
 {-|
 
 @docs WithKey, Model, Msg
 @docs Error
-@docs Package, PackageInfo, Docs, AllDocs
+@docs Package, PackageInfo
+@docs Docs, DocsKey, AllDocs
 @docs Status
-@docs findPackage
 
 -}
 
@@ -22,7 +22,6 @@ import Dict exposing (Dict)
 import Elm.Docs exposing (Module)
 import Elm.Version exposing (Version)
 import Json.Decode as Decode
-import List.Extra
 import Ports exposing (DocsResponse)
 import Route exposing (Route)
 import SelectList exposing (SelectList)
@@ -62,6 +61,14 @@ type alias AllDocs =
     Dict ( String, String, String ) (Status Docs)
 
 
+type alias DocsKey a =
+    { a
+        | authorName : String
+        , packageName : String
+        , version : Version
+    }
+
+
 type alias Docs =
     { readMe : String
     , moduleDocs : List Module
@@ -86,20 +93,3 @@ type Msg
     | ClickedLink UrlRequest
     | UrlChanged Url
     | AcceptPackageDocs (Result Decode.Error DocsResponse)
-
-
-
--- functions
-
-
-findPackage : String -> String -> List Package -> Maybe Package
-findPackage authorName packageName packages =
-    List.Extra.find
-        (\versions ->
-            let
-                pkg =
-                    SelectList.selected versions
-            in
-            pkg.authorName == authorName && pkg.packageName == packageName
-        )
-        packages
