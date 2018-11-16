@@ -2,7 +2,7 @@ module Types exposing
     ( WithKey, Model, Msg(..)
     , Error(..)
     , Package, PackageInfo
-    , Docs, DocsKey, AllDocs
+    , Docs, AllDocs
     , Status(..)
     )
 
@@ -11,7 +11,7 @@ module Types exposing
 @docs WithKey, Model, Msg
 @docs Error
 @docs Package, PackageInfo
-@docs Docs, DocsKey, AllDocs
+@docs Docs, AllDocs
 @docs Status
 
 -}
@@ -23,7 +23,7 @@ import Elm.Docs exposing (Module)
 import Elm.Version exposing (Version)
 import Json.Decode as Decode
 import Ports exposing (DocsResponse)
-import Route exposing (Route)
+import Route exposing (..)
 import SelectList exposing (SelectList)
 import Url exposing (Url)
 
@@ -59,14 +59,6 @@ type alias PackageInfo =
 
 type alias AllDocs =
     Dict ( String, String, String ) (Status Docs)
-
-
-type alias DocsKey a =
-    { a
-        | authorName : String
-        , packageName : String
-        , version : Version
-    }
 
 
 type alias Docs =
