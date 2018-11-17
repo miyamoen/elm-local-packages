@@ -19,7 +19,7 @@ view { route } =
     row
         [ width fill
         , height <| px 50
-        , Background.color <| rgb255 238 238 238
+        , Background.color Constant.color.lightGrey
         , Border.widthEach { bottom = 2, left = 0, right = 0, top = 0 }
         , Border.color <| rgb255 96 181 204
         ]

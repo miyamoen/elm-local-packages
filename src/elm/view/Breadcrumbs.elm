@@ -21,7 +21,7 @@ view route =
         , Route.moduleKey route |> Maybe.map moduleLink
         ]
         |> List.intersperse (text "/")
-        |> row [ spacing 10, Font.size <| round <| Constant.fontSize * 1.5 ]
+        |> row [ spacing 10, Font.size Constant.fontSize.middle ]
 
 
 authorLink : Route.AuthorKey a -> Element msg
@@ -31,13 +31,13 @@ authorLink { authorName } =
 
 packageLink : Route.PackageKey a -> Element msg
 packageLink key =
-    link [ Font.color Constant.linkColor ]
+    link [ Font.color Constant.color.link ]
         { label = text key.packageName, url = Route.packageAsString key }
 
 
 docsLink : Route.DocsKey a -> Element msg
 docsLink key =
-    link [ Font.color Constant.linkColor ]
+    link [ Font.color Constant.color.link ]
         { label = text <| Version.toString key.version
         , url = Route.readMeAsString key
         }
@@ -45,7 +45,7 @@ docsLink key =
 
 moduleLink : Route.ModuleKey a -> Element msg
 moduleLink key =
-    link [ Font.color Constant.linkColor ]
+    link [ Font.color Constant.color.link ]
         { label = text key.moduleName
         , url = Route.moduleAsString key
         }

@@ -2,6 +2,7 @@ module PackageSummary exposing (book, view)
 
 import Bibliopola exposing (..)
 import Bibliopola.Story as Story
+import Constant
 import Element exposing (..)
 import Element.Border as Border
 import Element.Font as Font
@@ -24,14 +25,14 @@ view package =
         , spacing 8
         , width fill
         , Border.widthEach { bottom = 1, left = 0, right = 0, top = 0 }
-        , Border.color <| rgb255 238 238 238
+        , Border.color Constant.color.lightGrey
         ]
         [ wrappedRow [ width fill, height <| px 30 ]
             [ link
                 [ alignLeft
-                , Font.size 24
-                , Font.color <| rgb255 17 132 206
-                , mouseOver [ Font.color <| rgb255 234 21 122 ]
+                , Font.size Constant.fontSize.middle
+                , Font.color Constant.color.link
+                , mouseOver [ Font.color Constant.color.accent ]
                 ]
                 { url = Route.readMeAsString info
                 , label = row [] [ text authorName, text "/", text packageName ]
@@ -39,8 +40,7 @@ view package =
             , link
                 [ alignRight
                 , alignBottom
-                , Font.size 16
-                , Font.color <| rgb255 187 187 187
+                , Font.color Constant.color.grey
                 , pointer
                 ]
                 { url = Route.packageAsString info
@@ -58,7 +58,7 @@ view package =
                             ]
                 }
             ]
-        , paragraph [ Font.size 16, height <| px 24 ] [ text summary ]
+        , paragraph [ height <| px Constant.fontSize.middle ] [ text summary ]
         ]
 
 

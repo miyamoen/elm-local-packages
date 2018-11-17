@@ -18,7 +18,7 @@ import ViewUtil exposing (withCss)
 
 view : String -> Element msg
 view raw =
-    paragraph [ Font.size Constant.fontSize ] [ markdown raw ]
+    paragraph [] [ markdown raw ]
 
 
 markdown : String -> Element msg

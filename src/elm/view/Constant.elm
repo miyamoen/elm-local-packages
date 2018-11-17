@@ -1,7 +1,7 @@
 module Constant exposing
     ( breakPoints
     , padding, fontSize
-    , linkColor, accentColor
+    , color
     )
 
 {-|
@@ -9,10 +9,7 @@ module Constant exposing
 @docs breakPoints
 @docs padding, fontSize
 
-
-## Color
-
-@docs linkColor, accentColor
+@docs color
 
 -}
 
@@ -29,16 +26,22 @@ padding =
     20
 
 
-fontSize : number
+fontSize : { small : number, normal : number, middle : number, large : number }
 fontSize =
-    16
+    { small = 12, normal = 16, middle = 24, large = 32 }
 
 
-linkColor : Color
-linkColor =
-    rgb255 17 132 206
-
-
-accentColor : Color
-accentColor =
-    rgb255 234 21 122
+color :
+    { link : Color
+    , black : Color
+    , grey : Color
+    , lightGrey : Color
+    , accent : Color
+    }
+color =
+    { link = rgb255 17 132 206
+    , black = rgb255 41 60 75
+    , grey = rgb255 187 187 187
+    , lightGrey = rgb255 238 238 238
+    , accent = rgb255 234 21 122
+    }

@@ -1,5 +1,6 @@
 module ViewUtil exposing (rootAttributes, withCss)
 
+import Constant
 import Element exposing (..)
 import Element.Font as Font exposing (typeface)
 import Html
@@ -16,7 +17,10 @@ withCss element =
 
 rootAttributes : List (Attribute msg)
 rootAttributes =
-    [ font, Font.color <| rgb255 41 60 75 ]
+    [ font
+    , Font.color Constant.color.black
+    , Font.size Constant.fontSize.normal
+    ]
 
 
 font : Attribute msg

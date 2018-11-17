@@ -28,16 +28,15 @@ view model =
     in
     column []
         [ el
-            [ Font.size <| Constant.fontSize * 2
+            [ Font.size Constant.fontSize.large
             , paddingXY 0 Constant.padding
             ]
           <|
             text "Local Cached Versions"
         , row
-            [ height <| px <| round <| Constant.fontSize * 1.5
-            , spacing 16
-            , Font.size Constant.fontSize
-            , Font.color <| rgb255 17 132 206
+            [ height <| px Constant.fontSize.middle
+            , spacing Constant.fontSize.normal
+            , Font.color Constant.color.link
             ]
           <|
             (Maybe.map versionLinks package |> Maybe.withDefault [ text "No versions" ])
@@ -52,7 +51,7 @@ versionLinks package =
 versionLink : PackageInfo -> Element msg
 versionLink package =
     link
-        [ mouseOver [ Font.color <| rgb255 234 21 122 ] ]
+        [ mouseOver [ Font.color Constant.color.accent ] ]
         { url = Route.readMeAsString package
         , label =
             text <| Elm.Version.toString <| package.version
