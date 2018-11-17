@@ -21,7 +21,12 @@ model =
                 , version = Version.one
                 }
     , errors = []
-    , route = Home
+    , route =
+        ReadMe
+            { authorName = "arowM"
+            , packageName = "elm-reference"
+            , version = Version.one
+            }
     }
 
 

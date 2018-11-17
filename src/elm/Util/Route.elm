@@ -1,14 +1,14 @@
 module Util.Route exposing
     ( authorKey, packageKey, docsKey, moduleKey
-    , package, readMe, moduleRoute
-    , packageAsString, readMeAsString, moduleAsString
+    , home, packages, package, readMe, moduleRoute
+    , homeAsString, packagesAsString, packageAsString, readMeAsString, moduleAsString
     )
 
 {-|
 
 @docs authorKey, packageKey, docsKey, moduleKey
-@docs package, readMe, moduleRoute
-@docs packageAsString, readMeAsString, moduleAsString
+@docs home, packages, package, readMe, moduleRoute
+@docs homeAsString, packagesAsString, packageAsString, readMeAsString, moduleAsString
 
 -}
 
@@ -82,6 +82,26 @@ moduleKey route =
 
         _ ->
             Nothing
+
+
+home : Route
+home =
+    Home
+
+
+homeAsString : String
+homeAsString =
+    Route.toString home
+
+
+packages : Route
+packages =
+    Packages
+
+
+packagesAsString : String
+packagesAsString =
+    Route.toString packages
 
 
 package : PackageKey a -> Route

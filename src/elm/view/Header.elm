@@ -2,18 +2,20 @@ module Header exposing (book, view)
 
 import Bibliopola exposing (..)
 import Bibliopola.Story as Story
+import Breadcrumbs
 import Constant
 import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
-import Element.Font as Font
+import Fake
 import Logo
-import Route exposing (Route(..))
+import Types exposing (..)
+import Util.Route as Route
 import ViewUtil exposing (withCss)
 
 
-view : Element msg
-view =
+view : Model -> Element msg
+view { route } =
     row
         [ width fill
         , height <| px 50
@@ -27,14 +29,15 @@ view =
             , centerX
             , width (maximum Constant.breakPoints.large fill)
             ]
-            [ link [] { label = Logo.view, url = Route.toString Home }
+            [ link [] { label = Logo.view, url = Route.homeAsString }
+            , Breadcrumbs.view route
             ]
         ]
 
 
 book : Book
 book =
-    bookWithFrontCover "Header" (withCss view)
+    bookWithFrontCover "Header" (withCss <| view Fake.model)
 
 
 main : Bibliopola.Program

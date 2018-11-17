@@ -46,29 +46,17 @@ update msg model =
             ( model, Cmd.none )
 
         ClickedLink (Internal url) ->
-            let
-                docsKey =
-                    Route.parse url |> Route.docsKey
-            in
-            ( { model
-                | allDocs =
-                    Maybe.map (\key -> AllDocs.initKey key model.allDocs) docsKey
-                        |> Maybe.withDefault model.allDocs
-              }
-            , Cmd.batch
-                [ Maybe.map
-                    (\key ->
-                        if AllDocs.exists key model.allDocs then
-                            Cmd.none
-
-                        else
-                            Ports.fetchPackageDocs_ key
+            case Route.parse url |> Route.docsKey of
+                Just docsKey ->
+                    ( { model | allDocs = AllDocs.initKey docsKey model.allDocs }
+                    , Cmd.batch
+                        [ Ports.fetchPackageDocs_ docsKey
+                        , Nav.pushUrl model.key <| Url.toString url
+                        ]
                     )
-                    docsKey
-                    |> Maybe.withDefault Cmd.none
-                , Nav.pushUrl model.key <| Url.toString url
-                ]
-            )
+
+                Nothing ->
+                    ( model, Nav.pushUrl model.key <| Url.toString url )
 
         ClickedLink (External url) ->
             ( model, Nav.load url )
