@@ -17,7 +17,7 @@ import ViewUtil exposing (withCss)
 
 view : Model -> Element msg
 view model =
-    column [] <| List.map PackageSummary.view model.allPackages
+    column [ width fill ] <| List.map PackageSummary.view model.allPackages
 
 
 book : Book

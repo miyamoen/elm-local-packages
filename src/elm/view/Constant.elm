@@ -1,7 +1,7 @@
 module Constant exposing
     ( breakPoints
     , padding, fontSize
-    , linkColor
+    , linkColor, accentColor
     )
 
 {-|
@@ -12,7 +12,7 @@ module Constant exposing
 
 ## Color
 
-@docs linkColor
+@docs linkColor, accentColor
 
 -}
 
@@ -37,3 +37,8 @@ fontSize =
 linkColor : Color
 linkColor =
     rgb255 17 132 206
+
+
+accentColor : Color
+accentColor =
+    rgb255 234 21 122
