@@ -8,6 +8,7 @@ module Util.AllDocs exposing (init, find, initKey, insert, failed, exists)
 
 import Dict exposing (Dict)
 import Elm.Version
+import Route exposing (..)
 import Types exposing (..)
 
 

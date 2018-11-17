@@ -1,24 +1,37 @@
-module Util.Packages exposing (find)
+module Util.Packages exposing (find, latest, match, hasVersions)
 
 {-|
 
-@docs find
+@docs find, latest, match, hasVersions
 
 -}
 
+import Elm.Version exposing (Version)
 import List.Extra
+import Route exposing (..)
 import SelectList
 import Types exposing (..)
 
 
-find : String -> String -> List Package -> Maybe Package
-find authorName packageName packages =
-    List.Extra.find
-        (\versions ->
-            let
-                pkg =
-                    SelectList.selected versions
-            in
-            pkg.authorName == authorName && pkg.packageName == packageName
-        )
-        packages
+find : PackageKey a -> List Package -> Maybe Package
+find key packages =
+    List.Extra.find (match key) packages
+
+
+latest : Package -> PackageInfo
+latest package =
+    SelectList.selected package
+
+
+match : PackageKey a -> Package -> Bool
+match key package =
+    let
+        target =
+            latest package
+    in
+    target.authorName == key.authorName && target.packageName == key.packageName
+
+
+hasVersions : Package -> Bool
+hasVersions package =
+    not <| SelectList.isSingle package
