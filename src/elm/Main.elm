@@ -13,6 +13,7 @@ import Types exposing (..)
 import Url exposing (Url)
 import Url.Parser
 import Util.AllDocs as AllDocs
+import Util.Packages as Packages
 import Util.Route as Route
 import View exposing (view)
 
@@ -29,7 +30,7 @@ init elmJsons url key =
                     ( [], [ DecodeError decodeError ] )
     in
     ( { key = key
-      , allPackages = allPackages
+      , allPackages = Packages.sort allPackages
       , allDocs = AllDocs.init
       , errors = errors
       , route = Route.parse url

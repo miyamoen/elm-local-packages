@@ -1,8 +1,8 @@
-module Util.Packages exposing (find, latest, match, hasVersions)
+module Util.Packages exposing (find, latest, match, hasVersions, sort)
 
 {-|
 
-@docs find, latest, match, hasVersions
+@docs find, latest, match, hasVersions, sort
 
 -}
 
@@ -35,3 +35,23 @@ match key package =
 hasVersions : Package -> Bool
 hasVersions package =
     not <| SelectList.isSingle package
+
+
+sort : List Package -> List Package
+sort packages =
+    List.sortBy
+        (\package ->
+            let
+                { authorName, packageName } =
+                    SelectList.selected package
+
+                weight =
+                    if authorName == "elm" || authorName == "elm-explorations" then
+                        0
+
+                    else
+                        1000
+            in
+            ( weight, authorName, packageName )
+        )
+        packages

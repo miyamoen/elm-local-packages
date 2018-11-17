@@ -5,11 +5,12 @@ import Elm.Version as Version
 import Route exposing (Route(..))
 import SelectList
 import Types exposing (..)
+import Util.Packages as Packages
 
 
 model : Model
 model =
-    { allPackages = packages
+    { allPackages = Packages.sort packages
     , allDocs =
         Dict.singleton ( "arowM", "elm-reference", "1.0.0" ) <|
             Success
