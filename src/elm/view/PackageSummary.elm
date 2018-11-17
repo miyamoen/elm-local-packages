@@ -7,17 +7,17 @@ import Element.Border as Border
 import Element.Font as Font
 import Elm.Version
 import Fake
-import SelectList
 import Types exposing (Package)
-import Url.Builder exposing (absolute)
+import Util.Packages as Packages
+import Util.Route as Route
 import ViewUtil exposing (withCss)
 
 
 view : Package -> Element msg
 view package =
     let
-        { authorName, packageName, summary, version } =
-            SelectList.selected package
+        ({ authorName, packageName, summary, version } as info) =
+            Packages.latest package
     in
     column
         [ paddingEach { top = 20, right = 0, bottom = 20 + 8, left = 0 }
@@ -33,7 +33,7 @@ view package =
                 , Font.color <| rgb255 17 132 206
                 , mouseOver [ Font.color <| rgb255 234 21 122 ]
                 ]
-                { url = absolute [ "packages", authorName, packageName, Elm.Version.toString version ] []
+                { url = Route.readMeAsString info
                 , label = row [] [ text authorName, text "/", text packageName ]
                 }
             , link
@@ -43,11 +43,11 @@ view package =
                 , Font.color <| rgb255 187 187 187
                 , pointer
                 ]
-                { url = absolute [ "packages", authorName, packageName ] []
+                { url = Route.packageAsString info
                 , label =
                     text <|
                         String.join " "
-                            [ if SelectList.afterLength package > 1 then
+                            [ if Packages.hasVersions package then
                                 "..."
 
                               else

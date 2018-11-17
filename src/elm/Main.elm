@@ -47,7 +47,7 @@ update msg model =
         ClickedLink (Internal url) ->
             let
                 docsKey =
-                    Route.parse url |> Route.extractDocsKey
+                    Route.parse url |> Route.docsKey
             in
             ( { model
                 | allDocs =

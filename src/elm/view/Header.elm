@@ -8,6 +8,7 @@ import Element.Background as Background
 import Element.Border as Border
 import Element.Font as Font
 import Logo
+import Route exposing (Route(..))
 import ViewUtil exposing (withCss)
 
 
@@ -26,7 +27,7 @@ view =
             , centerX
             , width (maximum Constant.breakPoints.large fill)
             ]
-            [ Logo.view
+            [ link [] { label = Logo.view, url = Route.toString Home }
             ]
         ]
 

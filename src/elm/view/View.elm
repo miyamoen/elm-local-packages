@@ -7,9 +7,10 @@ import Layout
 import Page.Overview
 import Page.Packages
 import Page.ReadMe
-import Route exposing (PackageRoute(..), Route(..))
+import Route exposing (Route(..))
 import Types exposing (..)
 import Util.Packages as Packages
+import Util.Route as Route
 import ViewUtil exposing (rootAttributes)
 
 
@@ -25,24 +26,12 @@ view { errors, allPackages, allDocs, route } =
     in
     { title = "Elm Local Packages"
     , body =
-        [ layout rootAttributes <| help model ]
+        [ layout rootAttributes <| routing model ]
     }
 
 
-font : Attribute msg
-font =
-    Font.family
-        [ typeface "Source Sans Pro"
-        , typeface "Trebuchet MS"
-        , typeface "Lucida Grande"
-        , typeface "Bitstream Vera Sans"
-        , typeface "Helvetica Neue"
-        , Font.sansSerif
-        ]
-
-
-help : Model -> Element Msg
-help model =
+routing : Model -> Element Msg
+routing model =
     Layout.view model <|
         case model.route of
             NotFound url ->
@@ -54,18 +43,11 @@ help model =
             Packages ->
                 Page.Packages.view model
 
-            Package authorName packageName packageRoute ->
-                case Packages.find authorName packageName model.allPackages of
-                    Just package ->
-                        case packageRoute of
-                            Overview ->
-                                Page.Overview.view package model
+            Package _ ->
+                Page.Overview.view model
 
-                            ReadMe version ->
-                                Page.ReadMe.view model
+            ReadMe _ ->
+                Page.ReadMe.view model
 
-                            Module version moduleName ->
-                                text "handle Package _ _ (Module _ _)"
-
-                    Nothing ->
-                        text "package not found"
+            Module _ ->
+                text "handle Package _ _ (Module _ _)"

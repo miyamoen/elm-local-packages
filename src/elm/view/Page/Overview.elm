@@ -9,18 +9,23 @@ module Page.Overview exposing (view, book)
 import Bibliopola exposing (..)
 import Constant
 import Element exposing (..)
-import Element.Border as Border
 import Element.Font as Font
 import Elm.Version
 import Fake
 import SelectList
 import Types exposing (..)
-import Url.Builder exposing (absolute)
+import Util.Packages as Packages
+import Util.Route as Route
 import ViewUtil exposing (withCss)
 
 
-view : Package -> Model -> Element msg
-view package model =
+view : Model -> Element msg
+view model =
+    let
+        package =
+            Route.packageKey model.route
+                |> Maybe.andThen (\key -> Packages.find key model.allPackages)
+    in
     column []
         [ el
             [ Font.size <| Constant.fontSize * 2
@@ -35,33 +40,28 @@ view package model =
             , Font.color <| rgb255 17 132 206
             ]
           <|
-            SelectList.selectedMap
-                (\_ selected ->
-                    let
-                        info =
-                            SelectList.selected selected
-                    in
-                    link
-                        [ mouseOver [ Font.color <| rgb255 234 21 122 ] ]
-                        { url =
-                            absolute
-                                [ "packages"
-                                , info.authorName
-                                , info.packageName
-                                , Elm.Version.toString info.version
-                                ]
-                                []
-                        , label =
-                            text <| Elm.Version.toString <| info.version
-                        }
-                )
-                package
+            (Maybe.map versionLinks package |> Maybe.withDefault [ text "No versions" ])
         ]
+
+
+versionLinks : Package -> List (Element msg)
+versionLinks package =
+    SelectList.selectedMap (\_ -> SelectList.selected >> versionLink) package
+
+
+versionLink : PackageInfo -> Element msg
+versionLink package =
+    link
+        [ mouseOver [ Font.color <| rgb255 234 21 122 ] ]
+        { url = Route.readMeAsString package
+        , label =
+            text <| Elm.Version.toString <| package.version
+        }
 
 
 book : Book
 book =
-    bookWithFrontCover "Overview" (view Fake.package Fake.model |> withCss)
+    bookWithFrontCover "Overview" (view Fake.model |> withCss)
 
 
 main : Bibliopola.Program
