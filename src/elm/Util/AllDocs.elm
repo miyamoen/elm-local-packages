@@ -1,15 +1,22 @@
-module Util.AllDocs exposing (init, find, initKey, insert, failed, exists)
+module Util.AllDocs exposing
+    ( init, initKey, insert, failed, exists
+    , find, findModule
+    )
 
 {-|
 
-@docs init, find, initKey, insert, failed, exists
+@docs init, initKey, insert, failed, exists
+@docs find, findModule
 
 -}
 
 import Dict exposing (Dict)
+import Elm.Docs exposing (Module)
 import Elm.Version
+import List.Extra
 import Route exposing (..)
 import Types exposing (..)
+import Util.Status as Status
 
 
 init : AllDocs
@@ -20,6 +27,16 @@ init =
 find : DocsKey a -> AllDocs -> Maybe (Status Docs)
 find docsKey allDocs =
     Dict.get (toComparable docsKey) allDocs
+
+
+findModule : ModuleKey a -> AllDocs -> Maybe (Status Module)
+findModule key allDocs =
+    find key allDocs
+        |> Maybe.andThen
+            (Status.map
+                (.moduleDocs >> List.Extra.find (.name >> (==) key.moduleName))
+                >> Status.liftMaybe
+            )
 
 
 initKey : DocsKey a -> AllDocs -> AllDocs

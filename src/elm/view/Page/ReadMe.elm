@@ -11,6 +11,7 @@ import Element exposing (..)
 import Elm.Version
 import Fake exposing (model)
 import MarkdownBlock
+import Status
 import Types exposing (..)
 import Util.AllDocs as AllDocs
 import Util.Route as Route
@@ -21,18 +22,7 @@ view : Model -> Element msg
 view { allDocs, route } =
     Route.docsKey route
         |> Maybe.andThen (\key -> AllDocs.find key allDocs)
-        |> Maybe.map
-            (\status ->
-                case status of
-                    Success { readMe } ->
-                        MarkdownBlock.view readMe
-
-                    Failure ->
-                        text "Failure"
-
-                    Loading ->
-                        text "loading"
-            )
+        |> Maybe.map (Status.view (.readMe >> MarkdownBlock.view))
         |> Maybe.withDefault (text "no readme")
 
 

@@ -1,8 +1,8 @@
-module Util.Status exposing (toMaybe)
+module Util.Status exposing (toMaybe, map, liftMaybe)
 
 {-|
 
-@docs toMaybe
+@docs toMaybe, map, liftMaybe
 
 -}
 
@@ -17,3 +17,32 @@ toMaybe status =
 
         _ ->
             Nothing
+
+
+map : (a -> b) -> Status a -> Status b
+map tagger status =
+    case status of
+        Success a ->
+            Success <| tagger a
+
+        Failure ->
+            Failure
+
+        Loading ->
+            Loading
+
+
+liftMaybe : Status (Maybe a) -> Maybe (Status a)
+liftMaybe status =
+    case status of
+        Success (Just a) ->
+            Just <| Success a
+
+        Success Nothing ->
+            Nothing
+
+        Failure ->
+            Just Failure
+
+        Loading ->
+            Just Loading
