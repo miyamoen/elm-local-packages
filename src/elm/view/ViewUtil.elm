@@ -1,4 +1,4 @@
-module ViewUtil exposing (rootAttributes, withCss)
+module ViewUtil exposing (codeFont, rootAttributes, withCss)
 
 import Constant
 import Element exposing (..)
@@ -32,4 +32,16 @@ font =
         , typeface "Bitstream Vera Sans"
         , typeface "Helvetica Neue"
         , Font.sansSerif
+        ]
+
+
+codeFont : Attribute msg
+codeFont =
+    Font.family
+        [ typeface "Source Code Pro"
+        , typeface "Consolas"
+        , typeface "Liberation Mono"
+        , typeface "Menlo"
+        , typeface "Courier"
+        , Font.monospace
         ]
