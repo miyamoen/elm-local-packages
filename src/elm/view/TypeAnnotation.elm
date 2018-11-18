@@ -22,12 +22,42 @@ import ViewUtil exposing (withCss)
 
 view : Type -> Element msg
 view tipe =
-    none
+    text <| toString tipe
+
+
+toString : Type -> String
+toString tipe =
+    case tipe of
+        Var var ->
+            var
+
+        Lambda arg return ->
+            "handle Lambda _ _"
+
+        Tuple _ ->
+            "handle Tuple _"
+
+        Type _ _ ->
+            "handle Type _ _"
+
+        Record _ _ ->
+            "handle Record _ _"
 
 
 book : Book
 book =
-    bookWithFrontCover "TypeAnnotation" (view (Var "constant"))
+    intoBook "TypeAnnotation" identity (view >> withCss)
+        |> addStory
+            (Story "type"
+                [ ( "variable", Var "variable" )
+                , ( "a->b", Lambda (Var "a") (Var "b") )
+                , ( "(a,b)", Tuple [ Var "a", Var "b" ] )
+                , ( "Maybe a", Type "Maybe" [ Var "a" ] )
+                , ( "{ x : Float }", Record [ ( "x", Type "Float" [] ) ] Nothing )
+                ]
+            )
+        |> buildBook
+        |> withFrontCover (view (Var "variable") |> withCss)
 
 
 main : Bibliopola.Program
