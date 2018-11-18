@@ -1,28 +1,20 @@
-module TypeAnnotation exposing (view, book)
+module TypeBody exposing (view, toString, book)
 
 {-|
 
-@docs view, book
+@docs view, toString, book
 
 -}
 
 import Bibliopola exposing (..)
 import Element exposing (..)
-import Elm.Docs exposing (Block(..))
 import Elm.Type exposing (Type(..))
-import Elm.Version
-import Fake exposing (model)
-import MarkdownBlock
-import Status
-import Types exposing (..)
-import Util.AllDocs as AllDocs
-import Util.Route as Route
 import ViewUtil exposing (codeFont, withCss)
 
 
 view : Type -> Element msg
 view tipe =
-    paragraph [ codeFont ] [ text <| toString tipe ]
+    el [ codeFont ] <| text <| toString tipe
 
 
 toString : Type -> String
@@ -69,7 +61,7 @@ toString tipe =
 
 book : Book
 book =
-    intoBook "TypeAnnotation" identity (view >> withCss)
+    intoBook "TypeBody" identity (view >> withCss)
         |> addStory
             (Story "type"
                 [ ( "variable", Var "variable" )

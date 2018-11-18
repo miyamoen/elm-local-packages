@@ -7,12 +7,17 @@ module Page.Module exposing (view, book)
 -}
 
 import Bibliopola exposing (..)
+import Constant exposing (fontSize)
 import Element exposing (..)
-import Elm.Docs exposing (Block(..))
+import Element.Border as Border
+import Element.Font as Font
+import Elm.Docs exposing (Block(..), Module)
+import Elm.Type exposing (Type(..))
 import Elm.Version
 import Fake exposing (model)
 import MarkdownBlock
 import Status
+import TypeAnnotation
 import Types exposing (..)
 import Util.AllDocs as AllDocs
 import Util.Route as Route
@@ -23,35 +28,57 @@ view : Model -> Element msg
 view { allDocs, route } =
     Route.moduleKey route
         |> Maybe.andThen (\key -> AllDocs.findModule key allDocs)
-        |> Maybe.map (Status.view (Elm.Docs.toBlocks >> blocks))
+        |> Maybe.map
+            (Status.view help)
         |> Maybe.withDefault (text "no module doc")
+
+
+help : Module -> Element msg
+help moduleDoc =
+    column [ paddingXY 0 fontSize.large ]
+        [ el [ Font.size fontSize.huge ] <| text moduleDoc.name
+        , Elm.Docs.toBlocks moduleDoc |> blocks
+        ]
 
 
 blocks : List Block -> Element msg
 blocks blockList =
-    column [] <| List.map block blockList
+    column [ spacing fontSize.large ] <| List.map block blockList
 
 
 block : Block -> Element msg
 block block_ =
     case block_ of
         MarkdownBlock raw ->
-            MarkdownBlock.view raw
+            el
+                [ paddingEach
+                    { top = fontSize.large
+                    , right = 0
+                    , bottom = 0
+                    , left = 0
+                    }
+                ]
+            <|
+                MarkdownBlock.view raw
 
-        UnionBlock _ ->
-            Debug.todo "handle UnionBlock _"
+        UnionBlock { name, comment, args, tags } ->
+            column
+                [ Border.widthEach { bottom = 0, left = 0, right = 0, top = 1 }
+                , Border.color Constant.color.lightGrey
+                ]
+                []
 
         AliasBlock _ ->
-            Debug.todo "handle AliasBlock _"
+            text "handle AliasBlock _"
 
         ValueBlock _ ->
-            Debug.todo "handle ValueBlock _"
+            text "handle ValueBlock _"
 
         BinopBlock _ ->
-            Debug.todo "handle BinopBlock _"
+            text "handle BinopBlock _"
 
         UnknownBlock _ ->
-            Debug.todo "handle UnknownBlock _"
+            text "handle UnknownBlock _"
 
 
 book : Book

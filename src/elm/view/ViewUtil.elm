@@ -1,10 +1,15 @@
-module ViewUtil exposing (codeFont, rootAttributes, withCss)
+module ViewUtil exposing (class, codeFont, rootAttributes, withCss)
 
 import Constant
 import Element exposing (..)
 import Element.Font as Font exposing (typeface)
 import Html
 import Html.Attributes exposing (href, rel, src)
+
+
+class : String -> Attribute msg
+class str =
+    htmlAttribute <| Html.Attributes.class str
 
 
 withCss : Element msg -> Element msg
