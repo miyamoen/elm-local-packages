@@ -8,6 +8,7 @@ module Page.Module exposing (view, book)
 
 import Bibliopola exposing (..)
 import Constant exposing (fontSize)
+import DocHeader.Custom
 import Element exposing (..)
 import Element.Border as Border
 import Element.Font as Font
@@ -17,7 +18,7 @@ import Elm.Version
 import Fake exposing (model)
 import MarkdownBlock
 import Status
-import TypeAnnotation
+import TypeBody
 import Types exposing (..)
 import Util.AllDocs as AllDocs
 import Util.Route as Route
@@ -61,12 +62,23 @@ block block_ =
             <|
                 MarkdownBlock.view raw
 
-        UnionBlock { name, comment, args, tags } ->
+        UnionBlock union ->
             column
                 [ Border.widthEach { bottom = 0, left = 0, right = 0, top = 1 }
                 , Border.color Constant.color.lightGrey
                 ]
-                []
+                [ DocHeader.Custom.view union
+                , el
+                    [ paddingEach
+                        { top = fontSize.normal
+                        , right = 0
+                        , bottom = fontSize.normal
+                        , left = fontSize.large
+                        }
+                    ]
+                  <|
+                    MarkdownBlock.view union.comment
+                ]
 
         AliasBlock _ ->
             text "handle AliasBlock _"

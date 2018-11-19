@@ -18,7 +18,7 @@ import ViewUtil exposing (class, codeFont, withCss)
 
 parent : List (Element msg) -> Element msg
 parent =
-    column [ codeFont ]
+    column [ codeFont, paddingXY 0 <| Constant.padding // 2 ]
 
 
 line : Int -> List (Element msg) -> Element msg
