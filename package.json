@@ -1,14 +1,17 @@
 {
-  "name": "elm-local-package",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "elm-local-packages",
+  "version": "0.0.1",
+  "description": "Launch elm packages site with local elm caches.",
+  "repository": "github:miyamoen/elm-local-packages",
+  "bin": {
+    "elm-local-packages": "src/index.js"
+  },
   "scripts": {
     "start": "elm make src/elm/Main.elm --output=public/elm.js --debug && node src/index.js",
-    "build": "elm make src/elm/Main.elm --output=public/elm.js",
+    "build": "elm make src/elm/Main.elm --optimize --output=public/elm.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "miyamoen",
   "license": "BSD-3-Clause",
   "dependencies": {
     "app-data-folder": "^1.0.0",
