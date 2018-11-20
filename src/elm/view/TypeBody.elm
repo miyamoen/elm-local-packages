@@ -73,6 +73,7 @@ book =
                 , ( "(a,b,c)", Tuple [ Var "a", Var "b", Var "c" ] )
                 , ( "(a->b,b->c)", Tuple [ Lambda (Var "a") (Var "b"), Lambda (Var "b") (Var "c") ] )
                 , ( "Maybe_a", Type "Maybe" [ Var "a" ] )
+                , ( "List_List_a", Type "List" [ Type "List" [ Var "a" ] ] )
                 , ( "Float", Type "Float" [] )
                 , ( "{}", Record [] Nothing )
                 , ( "{x:Float}", Record [ ( "x", Type "Float" [] ) ] Nothing )

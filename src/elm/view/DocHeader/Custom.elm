@@ -17,7 +17,7 @@ import Url.Builder exposing (Root(..), custom)
 import ViewUtil exposing (class, codeFont, withCss)
 
 
-type alias Union a =
+type alias Custom a =
     { a
         | name : String
         , args : List String
@@ -25,7 +25,7 @@ type alias Union a =
     }
 
 
-view : Union a -> Element msg
+view : Custom a -> Element msg
 view { name, args, tags } =
     parent <|
         customFirst name args
@@ -68,7 +68,7 @@ customFirst name args =
 
 book : Book
 book =
-    intoBook "DocHeader" identity (view >> withCss)
+    intoBook "Custom" identity (view >> withCss)
         |> addStory
             (Story "header"
                 [ ( "Maybe", maybe )
@@ -79,7 +79,7 @@ book =
         |> withFrontCover (view maybe |> withCss)
 
 
-maybe : Union {}
+maybe : Custom {}
 maybe =
     { name = "Maybe"
     , args = [ "a" ]
@@ -87,7 +87,7 @@ maybe =
     }
 
 
-hiddenMaybe : Union {}
+hiddenMaybe : Custom {}
 hiddenMaybe =
     { name = "Maybe"
     , args = [ "a" ]
