@@ -10,13 +10,10 @@ import Bibliopola exposing (..)
 import Constant exposing (fontSize)
 import DocBlock exposing (makeInfo)
 import Element exposing (..)
-import Element.Border as Border
 import Element.Font as Font
 import Elm.Docs exposing (Block(..), Module)
-import Elm.Type exposing (Type(..))
 import Elm.Version
 import Fake exposing (model)
-import MarkdownBlock
 import Status
 import Types exposing (..)
 import Util.AllDocs as AllDocs
