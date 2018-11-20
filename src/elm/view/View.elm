@@ -4,6 +4,7 @@ import Browser exposing (Document)
 import Element exposing (..)
 import Element.Font as Font exposing (typeface)
 import Layout
+import Page.Module
 import Page.Overview
 import Page.Packages
 import Page.ReadMe
@@ -50,4 +51,4 @@ routing model =
                 Page.ReadMe.view model
 
             Module _ ->
-                text "handle Package _ _ (Module _ _)"
+                Page.Module.view model

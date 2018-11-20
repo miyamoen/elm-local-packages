@@ -31,7 +31,7 @@ view { allDocs, route } =
 
 help : ( Docs, Module ) -> Element msg
 help ( { authorName, packageName, version, moduleDocs }, moduleDoc ) =
-    column [ paddingXY 0 fontSize.large ]
+    column [ width fill, paddingXY 0 fontSize.large ]
         [ el [ Font.size fontSize.huge ] <| text moduleDoc.name
         , column [ spacing fontSize.large ] <|
             (List.map
