@@ -2,6 +2,7 @@ module Util.Route exposing
     ( authorKey, packageKey, docsKey, moduleKey
     , home, packages, package, readMe, moduleRoute
     , homeAsString, packagesAsString, packageAsString, readMeAsString, moduleAsString
+    , moduleTagAsString
     )
 
 {-|
@@ -9,11 +10,14 @@ module Util.Route exposing
 @docs authorKey, packageKey, docsKey, moduleKey
 @docs home, packages, package, readMe, moduleRoute
 @docs homeAsString, packagesAsString, packageAsString, readMeAsString, moduleAsString
+@docs moduleTagAsString
 
 -}
 
+import Elm.Version
 import Route exposing (..)
 import Types exposing (..)
+import Url.Builder exposing (Root(..), custom)
 
 
 authorKey : Route -> Maybe (AuthorKey {})
@@ -137,3 +141,17 @@ moduleRoute { authorName, packageName, version, moduleName } =
 moduleAsString : ModuleKey a -> String
 moduleAsString key =
     moduleRoute key |> Route.toString
+
+
+moduleTagAsString : ModuleKey a -> String -> String
+moduleTagAsString key tag =
+    custom
+        Absolute
+        [ "packages"
+        , key.authorName
+        , key.packageName
+        , Elm.Version.toString key.version
+        , String.replace "." "-" key.moduleName
+        ]
+        []
+        (Just tag)

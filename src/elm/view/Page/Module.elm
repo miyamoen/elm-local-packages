@@ -8,6 +8,7 @@ module Page.Module exposing (view, book)
 
 import Bibliopola exposing (..)
 import Constant exposing (fontSize)
+import DocBlock exposing (makeInfo)
 import DocHeader.Custom
 import Element exposing (..)
 import Element.Border as Border
@@ -29,68 +30,27 @@ view : Model -> Element msg
 view { allDocs, route } =
     Route.moduleKey route
         |> Maybe.andThen (\key -> AllDocs.findModule key allDocs)
-        |> Maybe.map
-            (Status.view help)
+        |> Maybe.map (Status.view help)
         |> Maybe.withDefault (text "no module doc")
 
 
-help : Module -> Element msg
-help moduleDoc =
+help : ( Docs, Module ) -> Element msg
+help ( { authorName, packageName, version, moduleDocs }, moduleDoc ) =
     column [ paddingXY 0 fontSize.large ]
         [ el [ Font.size fontSize.huge ] <| text moduleDoc.name
-        , Elm.Docs.toBlocks moduleDoc |> blocks
+        , column [ spacing fontSize.large ] <|
+            (List.map
+                (DocBlock.view <|
+                    makeInfo authorName
+                        packageName
+                        version
+                        moduleDoc.name
+                        moduleDocs
+                )
+             <|
+                Elm.Docs.toBlocks moduleDoc
+            )
         ]
-
-
-blocks : List Block -> Element msg
-blocks blockList =
-    column [ spacing fontSize.large ] <| List.map block blockList
-
-
-block : Block -> Element msg
-block block_ =
-    case block_ of
-        MarkdownBlock raw ->
-            el
-                [ paddingEach
-                    { top = fontSize.large
-                    , right = 0
-                    , bottom = 0
-                    , left = 0
-                    }
-                ]
-            <|
-                MarkdownBlock.view raw
-
-        UnionBlock union ->
-            column
-                [ Border.widthEach { bottom = 0, left = 0, right = 0, top = 1 }
-                , Border.color Constant.color.lightGrey
-                ]
-                [ DocHeader.Custom.view union
-                , el
-                    [ paddingEach
-                        { top = fontSize.normal
-                        , right = 0
-                        , bottom = fontSize.normal
-                        , left = fontSize.large
-                        }
-                    ]
-                  <|
-                    MarkdownBlock.view union.comment
-                ]
-
-        AliasBlock _ ->
-            text "handle AliasBlock _"
-
-        ValueBlock _ ->
-            text "handle ValueBlock _"
-
-        BinopBlock _ ->
-            text "handle BinopBlock _"
-
-        UnknownBlock _ ->
-            text "handle UnknownBlock _"
 
 
 book : Book

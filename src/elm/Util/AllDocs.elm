@@ -29,12 +29,16 @@ find docsKey allDocs =
     Dict.get (toComparable docsKey) allDocs
 
 
-findModule : ModuleKey a -> AllDocs -> Maybe (Status Module)
+findModule : ModuleKey a -> AllDocs -> Maybe (Status ( Docs, Module ))
 findModule key allDocs =
     find key allDocs
         |> Maybe.andThen
             (Status.map
-                (.moduleDocs >> List.Extra.find (.name >> (==) key.moduleName))
+                (\docs ->
+                    docs.moduleDocs
+                        |> List.Extra.find (.name >> (==) key.moduleName)
+                        |> Maybe.map (Tuple.pair docs)
+                )
                 >> Status.liftMaybe
             )
 

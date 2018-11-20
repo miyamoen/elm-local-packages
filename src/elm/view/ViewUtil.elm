@@ -1,4 +1,14 @@
-module ViewUtil exposing (class, codeFont, rootAttributes, withCss)
+module ViewUtil exposing
+    ( withCss, rootAttributes, font, codeFont
+    , class, id, title
+    )
+
+{-|
+
+@docs withCss, rootAttributes, font, codeFont
+@docs class, id, title
+
+-}
 
 import Constant
 import Element exposing (..)
@@ -10,6 +20,16 @@ import Html.Attributes exposing (href, rel, src)
 class : String -> Attribute msg
 class str =
     htmlAttribute <| Html.Attributes.class str
+
+
+id : String -> Attribute msg
+id str =
+    htmlAttribute <| Html.Attributes.id str
+
+
+title : String -> Attribute msg
+title str =
+    htmlAttribute <| Html.Attributes.title str
 
 
 withCss : Element msg -> Element msg
