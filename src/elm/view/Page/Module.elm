@@ -9,7 +9,6 @@ module Page.Module exposing (view, book)
 import Bibliopola exposing (..)
 import Constant exposing (fontSize)
 import DocBlock exposing (makeInfo)
-import DocHeader.Custom
 import Element exposing (..)
 import Element.Border as Border
 import Element.Font as Font
@@ -19,7 +18,6 @@ import Elm.Version
 import Fake exposing (model)
 import MarkdownBlock
 import Status
-import TypeBody
 import Types exposing (..)
 import Util.AllDocs as AllDocs
 import Util.Route as Route
