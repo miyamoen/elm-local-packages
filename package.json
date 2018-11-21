@@ -1,6 +1,6 @@
 {
   "name": "elm-local-packages",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Launch elm packages site with local elm caches.",
   "repository": "github:miyamoen/elm-local-packages",
   "bin": {

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const carlo = require("carlo");
 const fs = require("fs").promises;
 const path = require("path");
