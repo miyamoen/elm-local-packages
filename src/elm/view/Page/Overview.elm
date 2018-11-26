@@ -26,7 +26,7 @@ view model =
             Route.packageKey model.route
                 |> Maybe.andThen (\key -> Packages.find key model.allPackages)
     in
-    column []
+    column [ width fill ]
         [ el
             [ Font.size Constant.fontSize.large
             , paddingXY 0 Constant.padding

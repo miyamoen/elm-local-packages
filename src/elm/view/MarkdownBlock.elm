@@ -18,7 +18,7 @@ import ViewUtil exposing (withCss)
 
 view : String -> Element msg
 view raw =
-    paragraph [] [ markdown raw ]
+    paragraph [ width fill ] [ markdown raw ]
 
 
 markdown : String -> Element msg

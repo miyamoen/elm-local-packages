@@ -21,7 +21,7 @@ view model =
     column [ width fill, spacing <| 2 * Constant.padding ]
         [ column [ width fill ] <|
             List.map PackageSummary.view model.allPackages
-        , column [ spacing Constant.padding ] <|
+        , column [ width fill, spacing Constant.padding ] <|
             List.map viewError model.errors
         ]
 
@@ -30,13 +30,13 @@ viewError : Error -> Element msg
 viewError error =
     case error of
         ElmJsonDecodeError decodeError ->
-            column [ spacing 5 ]
+            column [ width fill, spacing 5 ]
                 [ text "elm.json deecode failed"
                 , text <| Decode.errorToString decodeError
                 ]
 
         DocsDecodeError decodeError ->
-            column []
+            column [ width fill ]
                 [ text "docs.json decode failed"
                 , text <| Decode.errorToString decodeError
                 ]

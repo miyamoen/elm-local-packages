@@ -41,7 +41,8 @@ view info block =
     case block of
         Docs.MarkdownBlock markdown ->
             el
-                [ paddingEach
+                [ width fill
+                , paddingEach
                     { top = fontSize.large
                     , right = 0
                     , bottom = 0
@@ -65,7 +66,7 @@ view info block =
 
         Docs.UnknownBlock name ->
             paragraph
-                [ Font.color color.accent ]
+                [ Font.color color.accent, width fill ]
                 [ text "It seems that "
                 , row [] [ text name ]
                 , text " does not have any docs. Please open a bug report "
@@ -80,11 +81,18 @@ viewCodeBlock name comment header =
         [ Border.widthEach { bottom = 0, left = 0, right = 0, top = 1 }
         , Border.color color.lightGrey
         , id name
+        , width fill
         ]
-        [ column [ codeFont, paddingXY 0 <| Constant.padding // 2 ] <|
+        [ column
+            [ width fill
+            , codeFont
+            , paddingXY 0 <| Constant.padding // 2
+            ]
+          <|
             List.map (row [ height <| px 20 ]) header
         , el
-            [ paddingEach
+            [ width fill
+            , paddingEach
                 { top = fontSize.normal
                 , right = 0
                 , bottom = fontSize.normal
