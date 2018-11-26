@@ -29,7 +29,7 @@ view { route, allDocs } =
 
 moduleList : DocsKey a -> List Module -> Element msg
 moduleList key moduleDocs =
-    column [ spacing <| Constant.padding // 2 ]
+    column [ width fill, spacing <| Constant.padding // 2 ]
         [ readMeLink key
         , el [ Font.size Constant.fontSize.middle ] <| text "Module Docs"
         , column [] <| List.map (moduleLink key) moduleDocs
