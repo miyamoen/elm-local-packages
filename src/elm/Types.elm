@@ -77,7 +77,8 @@ type Status a
 
 
 type Error
-    = DecodeError Decode.Error
+    = ElmJsonDecodeError Decode.Error
+    | DocsDecodeError Decode.Error
 
 
 type Msg

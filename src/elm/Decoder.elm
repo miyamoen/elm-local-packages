@@ -9,21 +9,12 @@ import SelectList
 import Types exposing (..)
 
 
-allPackages : Decoder (List Package)
+allPackages : Decoder ( List Decode.Error, List Package )
 allPackages =
-    Decode.map
-        (List.Extra.gatherEqualsBy .name
-            >> List.map
-                (\( first, versions ) ->
-                    List.sortWith
-                        (\p1 p2 -> Elm.Version.compare p2.version p1.version)
-                        (first :: versions)
-                        |> SelectList.fromList
-                        |> Maybe.withDefault (SelectList.singleton first)
-                )
-        )
-    <|
-        list package
+    result package
+        |> list
+        |> Decode.map resultsToTuple
+        |> Decode.map (Tuple.mapSecond gatherPackageInfos)
 
 
 packageHelp :
@@ -60,6 +51,15 @@ depsDecoder =
     keyValuePairs string
 
 
+
+-- helper
+
+
+result : Decoder a -> Decoder (Result Decode.Error a)
+result decoder =
+    Decode.map (Decode.decodeValue decoder) Decode.value
+
+
 splitName : String -> ( String, String )
 splitName name =
     case String.split "/" name of
@@ -68,3 +68,31 @@ splitName name =
 
         _ ->
             ( "", name )
+
+
+gatherPackageInfos : List PackageInfo -> List Package
+gatherPackageInfos packageInfos =
+    List.Extra.gatherEqualsBy .name packageInfos
+        |> List.map
+            (\( first, versions ) ->
+                List.sortWith
+                    (\p1 p2 -> Elm.Version.compare p2.version p1.version)
+                    (first :: versions)
+                    |> SelectList.fromList
+                    |> Maybe.withDefault (SelectList.singleton first)
+            )
+
+
+resultsToTuple : List (Result e a) -> ( List e, List a )
+resultsToTuple results =
+    List.foldr
+        (\res ( errors, values ) ->
+            case res of
+                Ok value ->
+                    ( errors, value :: values )
+
+                Err err ->
+                    ( err :: errors, values )
+        )
+        ( [], [] )
+        results

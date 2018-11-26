@@ -37,7 +37,10 @@ const readElmJsons = async () => {
     paths.map(async dir => {
       const elmJson = await jsonfile
         .readFile(path.join(dir, "elm.json"))
-        .catch(_ => null);
+        .catch(err => {
+          console.warn("read elm.json", err);
+          return null;
+        });
       return elmJson ? { path: dir, ...elmJson } : null;
     })
   );
@@ -53,10 +56,12 @@ const readPackageDocs = async (authorName, packageName, version) => {
   );
 
   const readMe = await fs.readFile(path.join(docsDirPath, "README.md"), "utf8");
-  const moduleDocs = await jsonfile.readFile(
-    path.join(docsDirPath, "docs.json"),
-    "utf8"
-  );
+  const moduleDocs = await jsonfile
+    .readFile(path.join(docsDirPath, "docs.json"), "utf8")
+    .catch(err => {
+      console.warn("read docs.json", err);
+      return err.message;
+    });
   return { readMe, moduleDocs, authorName, packageName, version };
 };
 

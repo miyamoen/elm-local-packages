@@ -21,18 +21,18 @@ import View exposing (view)
 init : Value -> Url -> Key -> ( WithKey Model, Cmd Msg )
 init elmJsons url key =
     let
-        ( allPackages, errors ) =
+        ( errors, allPackages ) =
             case Decode.decodeValue Decoder.allPackages elmJsons of
                 Ok value ->
-                    ( value, [] )
+                    value
 
                 Err decodeError ->
-                    ( [], [ DecodeError decodeError ] )
+                    ( [ decodeError ], [] )
     in
     ( { key = key
       , allPackages = Packages.sort allPackages
       , allDocs = AllDocs.init
-      , errors = errors
+      , errors = List.map ElmJsonDecodeError errors
       , route = Route.parse url
       }
     , Cmd.none
@@ -70,7 +70,7 @@ update msg model =
             )
 
         AcceptPackageDocs (Err err) ->
-            ( { model | errors = DecodeError err :: model.errors }, Cmd.none )
+            ( { model | errors = DocsDecodeError err :: model.errors }, Cmd.none )
 
 
 subscriptions : WithKey Model -> Sub Msg
