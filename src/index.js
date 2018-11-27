@@ -7,30 +7,59 @@ const globby = require("globby");
 const jsonfile = require("jsonfile");
 const appData = require("app-data-folder");
 
-const startup = async () => {
-  const app = await carlo.launch();
+const existingPath = path =>
+  fs
+    .access(path)
+    .then(_ => ({ ok: path }))
+    .catch(err => ({ err: err.message }));
 
-  app.on("exit", () => process.exit());
-  app.serveFolder(path.join(__dirname, "..", "public"));
+const elmCachePath = (async () => {
+  if (process.env["ELM_HOME"]) {
+    return await existingPath(process.env["ELM_HOME"]).catch(_ => ({
+      err: `${process.env["ELM_HOME"]} directory is not found.`
+    }));
+  }
 
-  await app.exposeFunction("readElmJsons", readElmJsons);
-  await app.exposeFunction("readPackageDocs", readPackageDocs);
+  const { ok: ok1, err: err1 } = await existingPath(
+    path.join(process.env.HOME, ".elm")
+  );
+  if (ok1) {
+    return { ok: ok1 };
+  }
 
-  await app.load("index.html");
-};
+  const { ok: ok2, err: err2 } = await existingPath(
+    path.join(process.env.APPDATA, "elm")
+  );
+  if (ok2) {
+    return { ok: ok2 };
+  }
 
-const elmCachePath = process.env["ELM_HOME"] || appData("elm");
+  const { ok: ok3, err: err3 } = await existingPath(
+    path.join(process.env.HOME, "Library", "Application Support", "elm")
+  );
+  if (ok3) {
+    return { ok: ok3 };
+  }
 
-const packagesDirPath = path.join(elmCachePath, "0.19.0", "package");
+  return { err: "ELM HOME directory is not found. Set ELM_HOME env." };
+})();
+
+const packagesDirPath = elmCachePath.then(({ ok, err }) =>
+  ok ? { ok: path.join(ok, "0.19.0", "package") } : { err: err }
+);
 
 const readElmJsons = async () => {
+  const { ok: packagesDirPath_, err } = await packagesDirPath;
+  if (err) {
+    return { err: err };
+  }
+
   const pattern = path.join(
-    packagesDirPath,
+    packagesDirPath_,
     "*" /** author */,
     "*" /** package */,
     "*" /** version */
   );
-
   const paths = await globby([pattern], { onlyDirectories: true });
 
   const jsons = await Promise.all(
@@ -44,25 +73,48 @@ const readElmJsons = async () => {
       return elmJson ? { path: dir, ...elmJson } : null;
     })
   );
-  return Array.from(jsons.filter(e => e));
+  return { ok: Array.from(jsons.filter(e => e)) };
 };
 
 const readPackageDocs = async (authorName, packageName, version) => {
+  const { ok: packagesDirPath_, err } = await packagesDirPath;
+  if (err) {
+    return { err: err };
+  }
+
   const docsDirPath = path.join(
-    packagesDirPath,
+    packagesDirPath_,
     authorName,
     packageName,
     version
   );
 
-  const readMe = await fs.readFile(path.join(docsDirPath, "README.md"), "utf8");
+  const readMe = await fs
+    .readFile(path.join(docsDirPath, "README.md"), "utf8")
+    .then(ok => ({ ok: ok }))
+    .catch(err => ({ err: err.message }));
+
   const moduleDocs = await jsonfile
     .readFile(path.join(docsDirPath, "docs.json"), "utf8")
-    .catch(err => {
-      console.warn("read docs.json", err);
-      return err.message;
-    });
-  return { readMe, moduleDocs, authorName, packageName, version };
+    .then(ok => ({ ok: ok }))
+    .catch(err => ({ err: err.message }));
+
+  return { ok: { readMe, moduleDocs, authorName, packageName, version } };
 };
 
-startup();
+const startup = async () => {
+  const app = await carlo.launch();
+
+  app.on("exit", () => process.exit());
+  app.serveFolder(path.join(__dirname, "..", "public"));
+
+  await app.exposeFunction("readElmJsons", readElmJsons);
+  await app.exposeFunction("readPackageDocs", readPackageDocs);
+
+  await app.load("index.html");
+};
+
+// startup();
+readPackageDocs("miyamoen", "select-list", "4.0.0")
+  .then(a => console.log(a))
+  .catch(e => console.log(e));
