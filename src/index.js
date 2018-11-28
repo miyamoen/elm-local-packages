@@ -48,14 +48,9 @@ const packagesDirPath = elmCachePath.then(({ ok, err }) =>
   ok ? { ok: path.join(ok, "0.19.0", "package") } : { err: err }
 );
 
-const readElmJsons = async () => {
-  const { ok: packagesDirPath_, err } = await packagesDirPath;
-  if (err) {
-    return { err: err };
-  }
-
+const readElmJsons = packagesDirPath => async () => {
   const pattern = path.join(
-    packagesDirPath_,
+    packagesDirPath,
     "*" /** author */,
     "*" /** package */,
     "*" /** version */
@@ -73,17 +68,16 @@ const readElmJsons = async () => {
       return elmJson ? { path: dir, ...elmJson } : null;
     })
   );
-  return { ok: Array.from(jsons.filter(e => e)) };
+  return Array.from(jsons.filter(e => e));
 };
 
-const readPackageDocs = async (authorName, packageName, version) => {
-  const { ok: packagesDirPath_, err } = await packagesDirPath;
-  if (err) {
-    return { err: err };
-  }
-
+const readPackageDocs = packagesDirPath => async (
+  authorName,
+  packageName,
+  version
+) => {
   const docsDirPath = path.join(
-    packagesDirPath_,
+    packagesDirPath,
     authorName,
     packageName,
     version
@@ -91,30 +85,34 @@ const readPackageDocs = async (authorName, packageName, version) => {
 
   const readMe = await fs
     .readFile(path.join(docsDirPath, "README.md"), "utf8")
-    .then(ok => ({ ok: ok }))
     .catch(err => ({ err: err.message }));
 
   const moduleDocs = await jsonfile
     .readFile(path.join(docsDirPath, "docs.json"), "utf8")
-    .then(ok => ({ ok: ok }))
-    .catch(err => ({ err: err.message }));
+    .catch(err => err.message);
 
-  return { ok: { readMe, moduleDocs, authorName, packageName, version } };
+  return { readMe, moduleDocs, authorName, packageName, version };
 };
 
 const startup = async () => {
+  const { ok: packagesDirPath_, err } = await packagesDirPath;
+  if (err) {
+    console.warn(err);
+    exit;
+  }
+
   const app = await carlo.launch();
 
   app.on("exit", () => process.exit());
   app.serveFolder(path.join(__dirname, "..", "public"));
 
-  await app.exposeFunction("readElmJsons", readElmJsons);
-  await app.exposeFunction("readPackageDocs", readPackageDocs);
+  await app.exposeFunction("readElmJsons", readElmJsons(packagesDirPath_));
+  await app.exposeFunction(
+    "readPackageDocs",
+    readPackageDocs(packagesDirPath_)
+  );
 
   await app.load("index.html");
 };
 
-// startup();
-readPackageDocs("miyamoen", "select-list", "4.0.0")
-  .then(a => console.log(a))
-  .catch(e => console.log(e));
+startup();
