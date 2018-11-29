@@ -1,4 +1,4 @@
-module Util.Status exposing (toMaybe, map, liftMaybe)
+module Types.Status exposing (toMaybe, map, liftMaybe)
 
 {-|
 

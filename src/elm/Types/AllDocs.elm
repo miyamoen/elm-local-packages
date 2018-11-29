@@ -1,4 +1,4 @@
-module Util.AllDocs exposing
+module Types.AllDocs exposing
     ( init, initKey, insert, failed, exists
     , find, findModule
     )
@@ -14,9 +14,9 @@ import Dict exposing (Dict)
 import Elm.Docs exposing (Module)
 import Elm.Version
 import List.Extra
-import Route exposing (..)
 import Types exposing (..)
-import Util.Status as Status
+import Types.Route exposing (..)
+import Types.Status as Status
 
 
 init : AllDocs

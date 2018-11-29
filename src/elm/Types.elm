@@ -1,6 +1,8 @@
 module Types exposing
     ( WithKey, Model, Msg(..), msgToString
     , Error(..)
+    , Route(..)
+    , AuthorKey, PackageKey, DocsKey, ModuleKey
     , Package, PackageInfo
     , Docs, AllDocs
     , Status(..)
@@ -10,6 +12,8 @@ module Types exposing
 
 @docs WithKey, Model, Msg, msgToString
 @docs Error
+@docs Route
+@docs AuthorKey, PackageKey, DocsKey, ModuleKey
 @docs Package, PackageInfo
 @docs Docs, AllDocs
 @docs Status
@@ -23,7 +27,6 @@ import Elm.Docs exposing (Module)
 import Elm.Version exposing (Version)
 import Json.Decode as Decode
 import Ports exposing (DocsResponse)
-import Route exposing (..)
 import SelectList exposing (SelectList)
 import Url exposing (Url)
 
@@ -38,6 +41,40 @@ type alias Model =
     , errors : List Error
     , route : Route
     , query : String
+    }
+
+
+type Route
+    = HomePage
+    | NotFoundPage String
+    | PackagesPage
+    | PackagePage (PackageKey {})
+    | ReadMePage (DocsKey {})
+    | ModulePage (ModuleKey {})
+
+
+type alias AuthorKey a =
+    { a | authorName : String }
+
+
+type alias PackageKey a =
+    { a | authorName : String, packageName : String }
+
+
+type alias DocsKey a =
+    { a
+        | authorName : String
+        , packageName : String
+        , version : Version
+    }
+
+
+type alias ModuleKey a =
+    { a
+        | authorName : String
+        , packageName : String
+        , version : Version
+        , moduleName : String
     }
 
 

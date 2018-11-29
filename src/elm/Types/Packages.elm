@@ -1,4 +1,4 @@
-module Util.Packages exposing (find, latest, match, hasVersions, sort, filter)
+module Types.Packages exposing (find, latest, match, hasVersions, sort, filter)
 
 {-|
 
@@ -8,9 +8,9 @@ module Util.Packages exposing (find, latest, match, hasVersions, sort, filter)
 
 import Elm.Version exposing (Version)
 import List.Extra
-import Route exposing (..)
 import SelectList
 import Types exposing (..)
+import Types.Route exposing (..)
 
 
 find : PackageKey a -> List Package -> Maybe Package
