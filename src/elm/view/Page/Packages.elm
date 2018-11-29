@@ -7,20 +7,36 @@ module Page.Packages exposing (view, book)
 -}
 
 import Bibliopola exposing (..)
-import Constant
+import Constant exposing (fontSize)
 import Element exposing (..)
+import Element.Border as Border
+import Element.Font as Font
+import Element.Input as Input exposing (labelHidden, placeholder)
 import Fake
 import Json.Decode as Decode
 import PackageSummary
 import Types exposing (..)
+import Util.Packages
 import ViewUtil exposing (withCss)
 
 
-view : Model -> Element msg
+view : Model -> Element Msg
 view model =
-    column [ width fill, spacing <| 2 * Constant.padding ]
-        [ column [ width fill ] <|
-            List.map PackageSummary.view model.allPackages
+    column [ width fill ]
+        [ Input.text [ Border.rounded 8, padding 10, Font.size fontSize.middle ]
+            { onChange = NewQuery
+            , text = model.query
+            , placeholder =
+                if String.isEmpty model.query then
+                    Just <| placeholder [] <| text "Search"
+
+                else
+                    Nothing
+            , label = labelHidden "search"
+            }
+        , column [ width fill ] <|
+            List.map PackageSummary.view <|
+                Util.Packages.filter model.query model.allPackages
         , column [ width fill, spacing Constant.padding ] <|
             List.map viewError model.errors
         ]
@@ -44,7 +60,11 @@ viewError error =
 
 book : Book
 book =
-    bookWithFrontCover "Packages" (view Fake.model |> withCss)
+    bookWithFrontCover "Packages"
+        (view Fake.model
+            |> withCss
+            |> Element.map msgToString
+        )
 
 
 main : Bibliopola.Program

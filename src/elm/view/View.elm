@@ -16,18 +16,24 @@ import ViewUtil exposing (rootAttributes)
 
 
 view : WithKey Model -> Document Msg
-view { errors, allPackages, allDocs, route } =
+view { errors, allPackages, allDocs, route, query } =
     let
         model =
             { errors = errors
             , allPackages = allPackages
             , allDocs = allDocs
             , route = route
+            , query = query
             }
     in
     { title = "Elm Local Packages"
     , body =
-        [ layout rootAttributes <| routing model ]
+        [ layoutWith
+            { options = [ focusStyle <| FocusStyle Nothing Nothing Nothing ] }
+            rootAttributes
+          <|
+            routing model
+        ]
     }
 
 

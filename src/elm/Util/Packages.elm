@@ -1,8 +1,8 @@
-module Util.Packages exposing (find, latest, match, hasVersions, sort)
+module Util.Packages exposing (find, latest, match, hasVersions, sort, filter)
 
 {-|
 
-@docs find, latest, match, hasVersions, sort
+@docs find, latest, match, hasVersions, sort, filter
 
 -}
 
@@ -55,3 +55,31 @@ sort packages =
             ( weight, authorName, packageName )
         )
         packages
+
+
+filter : String -> List Package -> List Package
+filter query packages =
+    let
+        words =
+            String.words (String.toLower query)
+    in
+    List.filter (filterHelp words) packages
+
+
+filterHelp : List String -> Package -> Bool
+filterHelp words package =
+    let
+        latest_ =
+            latest package
+
+        name =
+            String.toLower latest_.name
+
+        summary =
+            String.toLower latest_.summary
+
+        matches word =
+            String.contains word name
+                || String.contains word summary
+    in
+    List.all matches words

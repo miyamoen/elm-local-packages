@@ -29,6 +29,7 @@ model =
             , packageName = "elm-reference"
             , version = Version.one
             }
+    , query = ""
     }
 
 

@@ -1,5 +1,5 @@
 module Types exposing
-    ( WithKey, Model, Msg(..)
+    ( WithKey, Model, Msg(..), msgToString
     , Error(..)
     , Package, PackageInfo
     , Docs, AllDocs
@@ -8,7 +8,7 @@ module Types exposing
 
 {-|
 
-@docs WithKey, Model, Msg
+@docs WithKey, Model, Msg, msgToString
 @docs Error
 @docs Package, PackageInfo
 @docs Docs, AllDocs
@@ -37,6 +37,7 @@ type alias Model =
     , allDocs : AllDocs
     , errors : List Error
     , route : Route
+    , query : String
     }
 
 
@@ -86,3 +87,23 @@ type Msg
     | ClickedLink UrlRequest
     | UrlChanged Url
     | AcceptPackageDocs (Result Decode.Error DocsResponse)
+    | NewQuery String
+
+
+msgToString : Msg -> String
+msgToString msg =
+    case msg of
+        NoOp ->
+            "NoOp"
+
+        ClickedLink urlRequest ->
+            "ClickedLink"
+
+        UrlChanged url ->
+            "UrlChanged"
+
+        AcceptPackageDocs docsResponseErrorDecodeResult ->
+            "AcceptPackageDocs"
+
+        NewQuery query ->
+            "NewQuery: " ++ query

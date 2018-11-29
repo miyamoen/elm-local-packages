@@ -34,6 +34,7 @@ init elmJsons url key =
       , allDocs = AllDocs.init
       , errors = List.map ElmJsonDecodeError errors
       , route = Route.parse url
+      , query = ""
       }
     , Cmd.none
     )
@@ -71,6 +72,9 @@ update msg model =
 
         AcceptPackageDocs (Err err) ->
             ( { model | errors = DocsDecodeError err :: model.errors }, Cmd.none )
+
+        NewQuery new ->
+            ( { model | query = new }, Cmd.none )
 
 
 subscriptions : WithKey Model -> Sub Msg
