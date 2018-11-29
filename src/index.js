@@ -5,7 +5,6 @@ const fs = require("fs").promises;
 const path = require("path");
 const globby = require("globby");
 const jsonfile = require("jsonfile");
-const appData = require("app-data-folder");
 
 const existingPath = path =>
   fs
