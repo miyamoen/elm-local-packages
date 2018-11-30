@@ -1,20 +1,23 @@
-module ViewUtil exposing
-    ( withCss, rootAttributes, font, codeFont
+module Views.Utils exposing
+    ( rootAttributes, font, codeFont
     , class, id, title
+    , withCss
     )
 
 {-|
 
-@docs withCss, rootAttributes, font, codeFont
+@docs rootAttributes, font, codeFont
 @docs class, id, title
+@docs withCss
 
 -}
 
-import Constant
 import Element exposing (..)
 import Element.Font as Font exposing (typeface)
 import Html
 import Html.Attributes exposing (href, rel, src)
+import Views.Colors exposing (black)
+import Views.Constants exposing (fontSize)
 
 
 class : String -> Attribute msg
@@ -43,8 +46,8 @@ withCss element =
 rootAttributes : List (Attribute msg)
 rootAttributes =
     [ font
-    , Font.color Constant.color.black
-    , Font.size Constant.fontSize.normal
+    , Font.color black
+    , Font.size fontSize.normal
     ]
 
 
