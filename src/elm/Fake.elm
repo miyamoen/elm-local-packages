@@ -4,10 +4,9 @@ import Dict
 import Elm.Docs exposing (..)
 import Elm.Type exposing (Type(..))
 import Elm.Version as Version
-import Route exposing (Route(..))
 import SelectList
 import Types exposing (..)
-import Util.Packages as Packages
+import Types.Packages as Packages
 
 
 model : Model
@@ -24,7 +23,7 @@ model =
                 }
     , errors = []
     , route =
-        ReadMe
+        ReadMePage
             { authorName = "arowM"
             , packageName = "elm-reference"
             , version = Version.one
