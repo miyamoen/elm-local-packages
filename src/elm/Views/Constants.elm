@@ -23,6 +23,13 @@ padding =
     20
 
 
-fontSize : { small : number, normal : number, middle : number, large : number, huge : number }
+fontSize :
+    { tiny : number
+    , small : number
+    , normal : number
+    , middle : number
+    , large : number
+    , huge : number
+    }
 fontSize =
-    { small = 12, normal = 16, middle = 24, large = 32, huge = 48 }
+    { tiny = 8, small = 12, normal = 16, middle = 24, large = 32, huge = 48 }

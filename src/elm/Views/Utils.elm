@@ -1,14 +1,14 @@
 module Views.Utils exposing
     ( rootAttributes, font, codeFont
     , class, id, title
-    , withCss
+    , withFrame
     )
 
 {-|
 
 @docs rootAttributes, font, codeFont
 @docs class, id, title
-@docs withCss
+@docs withFrame
 
 -}
 
@@ -35,12 +35,9 @@ title str =
     htmlAttribute <| Html.Attributes.title str
 
 
-withCss : Element msg -> Element msg
-withCss element =
-    column (width fill :: height fill :: rootAttributes)
-        [ element
-        , html <| Html.node "link" [ rel "stylesheet", href "/public/style.css" ] []
-        ]
+withFrame : Element msg -> Element msg
+withFrame element =
+    column (width fill :: height fill :: rootAttributes) [ element ]
 
 
 rootAttributes : List (Attribute msg)
