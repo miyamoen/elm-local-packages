@@ -5,6 +5,7 @@ import Views.Atoms.Breadcrumbs
 import Views.Atoms.Link
 import Views.Atoms.Logo
 import Views.Atoms.MarkdownBlock
+import Views.Atoms.SearchInput
 import Views.Atoms.Status
 import Views.Organisms.Breadcrumbs
 import Views.Organisms.Error
@@ -20,6 +21,7 @@ shelf =
         |> addShelf
             (emptyShelf "Atoms"
                 |> addBook Views.Atoms.Link.book
+                |> addBook Views.Atoms.SearchInput.book
                 |> addBook Views.Atoms.Logo.book
                 |> addBook Views.Atoms.Breadcrumbs.book
                 |> addBook Views.Atoms.MarkdownBlock.book

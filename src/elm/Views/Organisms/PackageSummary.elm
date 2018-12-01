@@ -61,7 +61,7 @@ view package =
 
 listView : List Package -> Element msg
 listView packages =
-    column [ spacing Constants.padding ] <| List.map view packages
+    column [ width fill, spacing Constants.padding ] <| List.map view packages
 
 
 shelf : Shelf

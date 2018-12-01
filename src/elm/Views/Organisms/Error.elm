@@ -28,7 +28,7 @@ view error =
 
 listView : List Error -> Element msg
 listView errors =
-    column [ spacing <| Constants.padding * 2 ] <| List.map view errors
+    column [ width fill, spacing <| Constants.padding * 2 ] <| List.map view errors
 
 
 shelf : Shelf

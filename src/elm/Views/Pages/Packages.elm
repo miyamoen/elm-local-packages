@@ -8,14 +8,11 @@ module Views.Pages.Packages exposing (view, book)
 
 import Bibliopola exposing (..)
 import Element exposing (..)
-import Element.Border as Border
-import Element.Font as Font
-import Element.Input as Input exposing (labelHidden, placeholder)
 import Fake
-import Json.Decode as Decode
 import Types exposing (..)
 import Types.Packages as Packages
-import Views.Constants as Constants exposing (fontSize)
+import Views.Atoms.SearchInput as SearchInput
+import Views.Constants as Constants
 import Views.Organisms.Error as Error
 import Views.Organisms.PackageSummary as PackageSummary
 import Views.Utils exposing (withFrame)
@@ -23,18 +20,8 @@ import Views.Utils exposing (withFrame)
 
 view : Model -> Element Msg
 view model =
-    column [ width fill ]
-        [ Input.text [ Border.rounded 8, padding 10, Font.size fontSize.middle ]
-            { onChange = NewQuery
-            , text = model.query
-            , placeholder =
-                if String.isEmpty model.query then
-                    Just <| placeholder [] <| text "Search"
-
-                else
-                    Nothing
-            , label = labelHidden "search"
-            }
+    column [ width fill, spacing <| Constants.padding * 2 ]
+        [ SearchInput.view NewQuery model.query
         , PackageSummary.listView <| Packages.filter model.query model.allPackages
         , Error.listView model.errors
         ]
