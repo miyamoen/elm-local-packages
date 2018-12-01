@@ -1,4 +1,4 @@
-module Page.Packages exposing (view, book)
+module Views.Pages.Packages exposing (view, book)
 
 {-|
 
@@ -7,17 +7,18 @@ module Page.Packages exposing (view, book)
 -}
 
 import Bibliopola exposing (..)
-import Constant exposing (fontSize)
 import Element exposing (..)
 import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input exposing (labelHidden, placeholder)
 import Fake
 import Json.Decode as Decode
-import PackageSummary
 import Types exposing (..)
-import Util.Packages
-import ViewUtil exposing (withCss)
+import Types.Packages as Packages
+import Views.Constants as Constants exposing (fontSize)
+import Views.Organisms.Error as Error
+import Views.Organisms.PackageSummary as PackageSummary
+import Views.Utils exposing (withFrame)
 
 
 view : Model -> Element Msg
@@ -34,35 +35,16 @@ view model =
                     Nothing
             , label = labelHidden "search"
             }
-        , column [ width fill ] <|
-            List.map PackageSummary.view <|
-                Util.Packages.filter model.query model.allPackages
-        , column [ width fill, spacing Constant.padding ] <|
-            List.map viewError model.errors
+        , PackageSummary.listView <| Packages.filter model.query model.allPackages
+        , Error.listView model.errors
         ]
-
-
-viewError : Error -> Element msg
-viewError error =
-    case error of
-        ElmJsonDecodeError decodeError ->
-            column [ width fill, spacing 5 ]
-                [ text "elm.json deecode failed"
-                , text <| Decode.errorToString decodeError
-                ]
-
-        DocsDecodeError decodeError ->
-            column [ width fill ]
-                [ text "docs.json decode failed"
-                , text <| Decode.errorToString decodeError
-                ]
 
 
 book : Book
 book =
     bookWithFrontCover "Packages"
         (view Fake.model
-            |> withCss
+            |> withFrame
             |> Element.map msgToString
         )
 
