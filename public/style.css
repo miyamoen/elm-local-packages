@@ -17,10 +17,6 @@
   text-decoration: underline;
 }
 
-a:hover {
-  text-decoration: underline;
-}
-
 .markdown-block img {
   max-width: 100%;
 }

@@ -7,6 +7,7 @@ import Views.Atoms.Logo
 import Views.Atoms.MarkdownBlock
 import Views.Atoms.Status
 import Views.Organisms.Breadcrumbs
+import Views.Organisms.Header
 
 
 shelf : Shelf
@@ -23,6 +24,7 @@ shelf =
         |> addShelf
             (emptyShelf "Organisms"
                 |> addBook Views.Organisms.Breadcrumbs.book
+                |> addBook Views.Organisms.Header.book
             )
 
 

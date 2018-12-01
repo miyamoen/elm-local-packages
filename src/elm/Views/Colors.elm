@@ -1,4 +1,4 @@
-module Views.Colors exposing (accent, black, grey, lightGrey, link)
+module Views.Colors exposing (accent, black, grey, lightGrey, link, secondary)
 
 import Element exposing (..)
 
@@ -11,6 +11,11 @@ link =
 accent : Color
 accent =
     rgb255 234 21 122
+
+
+secondary : Color
+secondary =
+    rgb255 96 181 204
 
 
 black : Color
