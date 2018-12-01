@@ -3,8 +3,8 @@ module Types.Route exposing
     , authorKey, packageKey, docsKey, moduleKey
     , home, packages, package, readMe, moduleRoute
     , toString
-    , homeAsString, packagesAsString, packageAsString, readMeAsString, moduleAsString
-    , moduleTagAsString
+    , homeUrl, packagesUrl, packageUrl, readMeUrl, moduleUrl
+    , moduleTagUrl
     )
 
 {-|
@@ -13,8 +13,8 @@ module Types.Route exposing
 @docs authorKey, packageKey, docsKey, moduleKey
 @docs home, packages, package, readMe, moduleRoute
 @docs toString
-@docs homeAsString, packagesAsString, packageAsString, readMeAsString, moduleAsString
-@docs moduleTagAsString
+@docs homeUrl, packagesUrl, packageUrl, readMeUrl, moduleUrl
+@docs moduleTagUrl
 
 -}
 
@@ -133,8 +133,8 @@ home =
     HomePage
 
 
-homeAsString : String
-homeAsString =
+homeUrl : String
+homeUrl =
     toString home
 
 
@@ -143,8 +143,8 @@ packages =
     PackagesPage
 
 
-packagesAsString : String
-packagesAsString =
+packagesUrl : String
+packagesUrl =
     toString packages
 
 
@@ -153,8 +153,8 @@ package { authorName, packageName } =
     PackagePage { authorName = authorName, packageName = packageName }
 
 
-packageAsString : PackageKey a -> String
-packageAsString key =
+packageUrl : PackageKey a -> String
+packageUrl key =
     package key |> toString
 
 
@@ -163,8 +163,8 @@ readMe { authorName, packageName, version } =
     ReadMePage { authorName = authorName, packageName = packageName, version = version }
 
 
-readMeAsString : DocsKey a -> String
-readMeAsString key =
+readMeUrl : DocsKey a -> String
+readMeUrl key =
     readMe key |> toString
 
 
@@ -178,13 +178,13 @@ moduleRoute { authorName, packageName, version, moduleName } =
         }
 
 
-moduleAsString : ModuleKey a -> String
-moduleAsString key =
+moduleUrl : ModuleKey a -> String
+moduleUrl key =
     moduleRoute key |> toString
 
 
-moduleTagAsString : ModuleKey a -> String -> String
-moduleTagAsString key tag =
+moduleTagUrl : ModuleKey a -> String -> String
+moduleTagUrl key tag =
     Url.Builder.custom
         Absolute
         [ "packages"
