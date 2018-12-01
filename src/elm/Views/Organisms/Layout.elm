@@ -1,21 +1,21 @@
-module Layout exposing (view)
+module Views.Organisms.Layout exposing (view)
 
-import Constant
 import Element exposing (..)
-import Header
-import Sidebar
 import Types exposing (..)
+import Views.Constants as Constants exposing (breakPoints)
+import Views.Organisms.Header as Header
+import Views.Organisms.Sidebar as Sidebar
 
 
 view : Model -> Element msg -> Element msg
 view model body =
     column
-        [ width fill, spacing Constant.padding ]
+        [ width fill, spacing Constants.padding ]
         [ Header.view model
         , row
-            [ width (maximum Constant.breakPoints.large fill)
-            , paddingXY Constant.padding 0
-            , spacing Constant.padding
+            [ width (maximum breakPoints.large fill)
+            , paddingXY Constants.padding 0
+            , spacing Constants.padding
             , centerX
             ]
           <|
