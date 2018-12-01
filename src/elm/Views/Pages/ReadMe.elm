@@ -1,4 +1,4 @@
-module Page.ReadMe exposing (view, book)
+module Views.Pages.ReadMe exposing (view, book)
 
 {-|
 
@@ -10,19 +10,19 @@ import Bibliopola exposing (..)
 import Element exposing (..)
 import Elm.Version
 import Fake exposing (model)
-import MarkdownBlock
-import Status
 import Types exposing (..)
-import Util.AllDocs as AllDocs
-import Util.Route as Route
-import ViewUtil exposing (withCss)
+import Types.AllDocs as AllDocs
+import Types.Route as Route
+import Views.Atoms.MarkdownBlock as MarkdownBlock
+import Views.Atoms.Status as Status
+import Views.Utils exposing (withFrame)
 
 
 view : Model -> Element msg
 view { allDocs, route } =
     Route.docsKey route
         |> Maybe.andThen (\key -> AllDocs.find key allDocs)
-        |> Maybe.map (Status.view (.readMe >> MarkdownBlock.view))
+        |> Maybe.map (Status.view (.readMe >> MarkdownBlock.wrapped))
         |> Maybe.withDefault (text "no readme")
 
 
@@ -38,7 +38,7 @@ book =
                         , version = Elm.Version.one
                         }
             }
-            |> withCss
+            |> withFrame
         )
 
 
