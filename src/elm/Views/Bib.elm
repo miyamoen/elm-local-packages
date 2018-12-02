@@ -12,6 +12,7 @@ import Views.Organisms.Error
 import Views.Organisms.Header
 import Views.Organisms.ModuleLinks
 import Views.Organisms.PackageSummary
+import Views.Pages.Module
 import Views.Pages.Overview
 import Views.Pages.Packages
 import Views.Pages.ReadMe
@@ -42,6 +43,7 @@ shelf =
                 |> addBook Views.Pages.Packages.book
                 |> addBook Views.Pages.Overview.book
                 |> addBook Views.Pages.ReadMe.book
+                |> addBook Views.Pages.Module.book
             )
 
 

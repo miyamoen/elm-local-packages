@@ -1,4 +1,4 @@
-module Page.Module exposing (view, book)
+module Views.Pages.Module exposing (view, book)
 
 {-|
 
@@ -7,18 +7,18 @@ module Page.Module exposing (view, book)
 -}
 
 import Bibliopola exposing (..)
-import Constant exposing (fontSize)
-import DocBlock exposing (makeInfo)
 import Element exposing (..)
 import Element.Font as Font
 import Elm.Docs exposing (Block(..), Module)
 import Elm.Version
 import Fake exposing (model)
-import Status
 import Types exposing (..)
-import Util.AllDocs as AllDocs
-import Util.Route as Route
-import ViewUtil exposing (withCss)
+import Types.AllDocs as AllDocs
+import Types.Route as Route
+import Views.Atoms.Status as Status
+import Views.Constants as Constants exposing (fontSize)
+import Views.Organisms.DocBlock as DocBlock exposing (makeInfo)
+import Views.Utils exposing (withFrame)
 
 
 view : Model -> Element msg
@@ -31,9 +31,9 @@ view { allDocs, route } =
 
 help : ( Docs, Module ) -> Element msg
 help ( { authorName, packageName, version, moduleDocs }, moduleDoc ) =
-    column [ width fill, paddingXY 0 fontSize.large ]
+    column [ width fill, spacing fontSize.large ]
         [ el [ Font.size fontSize.huge ] <| text moduleDoc.name
-        , column [ width fill, spacing fontSize.large ] <|
+        , column [ width fill, spacing <| Constants.padding * 2 ] <|
             (List.map
                 (DocBlock.view <|
                     makeInfo authorName
@@ -61,7 +61,7 @@ book =
                         , moduleName = "Reference"
                         }
             }
-            |> withCss
+            |> withFrame
         )
 
 

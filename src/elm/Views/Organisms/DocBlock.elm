@@ -1,4 +1,4 @@
-module DocBlock exposing
+module Views.Organisms.DocBlock exposing
     ( Info, makeInfo
     , view
     )
@@ -10,7 +10,6 @@ module DocBlock exposing
 
 -}
 
-import Constant exposing (color, fontSize)
 import Dict
 import Element exposing (..)
 import Element.Border as Border
@@ -18,9 +17,11 @@ import Element.Font as Font
 import Elm.Docs as Docs
 import Elm.Type as Type
 import Elm.Version as V
-import MarkdownBlock
-import Util.Route as Route
-import ViewUtil exposing (class, codeFont, id, title)
+import Types.Route as Route
+import Views.Atoms.MarkdownBlock as MarkdownBlock
+import Views.Colors as Colors
+import Views.Constants as Constants exposing (fontSize)
+import Views.Utils exposing (class, codeFont, id, title)
 
 
 
@@ -40,17 +41,14 @@ view : Info -> Docs.Block -> Element msg
 view info block =
     case block of
         Docs.MarkdownBlock markdown ->
-            el
+            paragraph
                 [ width fill
-                , paddingEach
-                    { top = fontSize.large
-                    , right = 0
-                    , bottom = 0
-                    , left = 0
-                    }
+
+                -- , explain Debug.todo
                 ]
             <|
-                MarkdownBlock.view markdown
+                [ MarkdownBlock.view markdown
+                ]
 
         Docs.ValueBlock value ->
             viewValue info value
@@ -66,7 +64,7 @@ view info block =
 
         Docs.UnknownBlock name ->
             paragraph
-                [ Font.color color.accent, width fill ]
+                [ Font.color Colors.accent, width fill ]
                 [ text "It seems that "
                 , row [] [ text name ]
                 , text " does not have any docs. Please open a bug report "
@@ -79,28 +77,34 @@ viewCodeBlock : String -> String -> List (Line msg) -> Element msg
 viewCodeBlock name comment header =
     column
         [ Border.widthEach { bottom = 0, left = 0, right = 0, top = 1 }
-        , Border.color color.lightGrey
+        , Border.color Colors.lightGrey
         , id name
         , width fill
+        , spacing Constants.padding
+        , paddingEach
+            { top = Constants.padding
+            , right = 0
+            , bottom = 0
+            , left = 0
+            }
         ]
         [ column
             [ width fill
             , codeFont
-            , paddingXY 0 <| Constant.padding // 2
             ]
           <|
             List.map (row [ height <| px 20 ]) header
         , el
             [ width fill
             , paddingEach
-                { top = fontSize.normal
+                { top = 0
                 , right = 0
-                , bottom = fontSize.normal
+                , bottom = 0
                 , left = fontSize.large
                 }
             ]
           <|
-            MarkdownBlock.view comment
+            MarkdownBlock.wrapped comment
         ]
 
 
@@ -253,7 +257,7 @@ makeLink : Info -> List (Attribute msg) -> String -> String -> Element msg
 makeLink { author, project, version, moduleName } attrs tagName humanName =
     let
         url =
-            Route.moduleTagAsString
+            Route.moduleTagUrl
                 { authorName = author
                 , packageName = project
                 , version = version
@@ -262,7 +266,7 @@ makeLink { author, project, version, moduleName } attrs tagName humanName =
                 tagName
     in
     link
-        ([ Font.color color.link, mouseOver [ Font.color color.accent ] ]
+        ([ Font.color Colors.link, mouseOver [ Font.color Colors.accent ] ]
             ++ attrs
         )
         { url = url, label = text humanName }
