@@ -41,14 +41,7 @@ view : Info -> Docs.Block -> Element msg
 view info block =
     case block of
         Docs.MarkdownBlock markdown ->
-            paragraph
-                [ width fill
-
-                -- , explain Debug.todo
-                ]
-            <|
-                [ MarkdownBlock.view markdown
-                ]
+            paragraph [ width fill ] [ MarkdownBlock.view markdown ]
 
         Docs.ValueBlock value ->
             viewValue info value

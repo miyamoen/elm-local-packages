@@ -5,16 +5,13 @@ module Main exposing (update)
 import Browser exposing (..)
 import Browser.Navigation as Nav exposing (Key)
 import Decoder
-import Elm.Version
 import Json.Decode as Decode exposing (Value)
 import Ports
-import Route
 import Types exposing (..)
+import Types.AllDocs as AllDocs
+import Types.Packages as Packages
+import Types.Route as Route
 import Url exposing (Url)
-import Url.Parser
-import Util.AllDocs as AllDocs
-import Util.Packages as Packages
-import Util.Route as Route
 import View exposing (view)
 
 

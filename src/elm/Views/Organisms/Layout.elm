@@ -14,7 +14,7 @@ view model body =
         [ Header.view model
         , row
             [ width (maximum breakPoints.large fill)
-            , paddingXY Constants.padding 0
+            , padding Constants.padding
             , spacing Constants.padding
             , centerX
             ]

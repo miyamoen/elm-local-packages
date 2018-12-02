@@ -3,16 +3,15 @@ module View exposing (view)
 import Browser exposing (Document)
 import Element exposing (..)
 import Element.Font as Font exposing (typeface)
-import Layout
-import Page.Module
-import Page.Overview
-import Page.Packages
-import Page.ReadMe
-import Route exposing (Route(..))
 import Types exposing (..)
-import Util.Packages as Packages
-import Util.Route as Route
-import ViewUtil exposing (rootAttributes)
+import Types.Packages as Packages
+import Types.Route as Route
+import Views.Organisms.Layout as Layout
+import Views.Pages.Module
+import Views.Pages.Overview
+import Views.Pages.Packages
+import Views.Pages.ReadMe
+import Views.Utils exposing (rootAttributes)
 
 
 view : WithKey Model -> Document Msg
@@ -41,20 +40,20 @@ routing : Model -> Element Msg
 routing model =
     Layout.view model <|
         case model.route of
-            NotFound url ->
+            NotFoundPage url ->
                 text <| "TODO: NotFound " ++ url
 
-            Home ->
-                Page.Packages.view model
+            HomePage ->
+                Views.Pages.Packages.view model
 
-            Packages ->
-                Page.Packages.view model
+            PackagesPage ->
+                Views.Pages.Packages.view model
 
-            Package _ ->
-                Page.Overview.view model
+            PackagePage _ ->
+                Views.Pages.Overview.view model
 
-            ReadMe _ ->
-                Page.ReadMe.view model
+            ReadMePage _ ->
+                Views.Pages.ReadMe.view model
 
-            Module _ ->
-                Page.Module.view model
+            ModulePage _ ->
+                Views.Pages.Module.view model
