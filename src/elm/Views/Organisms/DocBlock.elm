@@ -21,7 +21,7 @@ import Types.Route as Route
 import Views.Atoms.MarkdownBlock as MarkdownBlock
 import Views.Colors as Colors
 import Views.Constants as Constants exposing (fontSize)
-import Views.Utils exposing (class, codeFont, id, title)
+import Views.Utils exposing (codeFont, id, title)
 
 
 
@@ -41,7 +41,7 @@ view : Info -> Docs.Block -> Element msg
 view info block =
     case block of
         Docs.MarkdownBlock markdown ->
-            paragraph [ width fill ] [ MarkdownBlock.view markdown ]
+            paragraph [ width fill ] [ MarkdownBlock.view "module-docs" markdown ]
 
         Docs.ValueBlock value ->
             viewValue info value
@@ -97,7 +97,7 @@ viewCodeBlock name comment header =
                 }
             ]
           <|
-            MarkdownBlock.wrapped comment
+            MarkdownBlock.wrapped "module-docs" comment
         ]
 
 
@@ -741,7 +741,7 @@ toMoreLines s x xs =
 
 keyword : String -> Element msg
 keyword kw =
-    el [ class "hljs-keyword" ] <| text kw
+    el [ Font.color <| rgb255 133 153 0 ] <| text kw
 
 
 space : Element msg

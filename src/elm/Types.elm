@@ -3,7 +3,7 @@ module Types exposing
     , Error(..)
     , Route(..)
     , AuthorKey, PackageKey, DocsKey, ModuleKey
-    , Package, PackageInfo
+    , Package, PackageInfo, Exposed(..)
     , Docs, AllDocs
     , Status(..)
     )
@@ -14,7 +14,7 @@ module Types exposing
 @docs Error
 @docs Route
 @docs AuthorKey, PackageKey, DocsKey, ModuleKey
-@docs Package, PackageInfo
+@docs Package, PackageInfo, Exposed
 @docs Docs, AllDocs
 @docs Status
 
@@ -89,10 +89,16 @@ type alias PackageInfo =
     , summary : String
     , license : String
     , version : Version
+    , exposed : Exposed
     , deps : List ( String, String )
     , testDeps : List ( String, String )
     , path : String
     }
+
+
+type Exposed
+    = ExposedList (List String)
+    | ExposedKeyValues (List ( String, List String ))
 
 
 type alias AllDocs =

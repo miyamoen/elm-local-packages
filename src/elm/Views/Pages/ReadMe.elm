@@ -22,7 +22,7 @@ view : Model -> Element msg
 view { allDocs, route } =
     Route.docsKey route
         |> Maybe.andThen (\key -> AllDocs.find key allDocs)
-        |> Maybe.map (Status.view (.readMe >> MarkdownBlock.wrapped))
+        |> Maybe.map (Status.view (.readMe >> MarkdownBlock.wrapped ""))
         |> Maybe.withDefault (text "no readme")
 
 

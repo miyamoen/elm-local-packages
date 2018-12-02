@@ -33,7 +33,7 @@ help : ( Docs, Module ) -> Element msg
 help ( { authorName, packageName, version, moduleDocs }, moduleDoc ) =
     column [ width fill, spacing fontSize.large ]
         [ el [ Font.size fontSize.huge ] <| text moduleDoc.name
-        , column [ width fill, spacing <| Constants.padding * 2 ] <|
+        , column [ width fill, spacing <| fontSize.normal ] <|
             (List.map
                 (DocBlock.view <|
                     makeInfo authorName

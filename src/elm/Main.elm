@@ -1,4 +1,4 @@
-module Main exposing (update)
+module Main exposing (init, main, subscriptions, update)
 
 {-| -}
 

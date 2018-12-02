@@ -22,25 +22,27 @@ packageHelp :
     -> String
     -> String
     -> Elm.Version.Version
+    -> Exposed
     -> List ( String, String )
     -> List ( String, String )
     -> String
     -> PackageInfo
-packageHelp name summary license version deps testDeps =
+packageHelp name summary license version exposed deps testDeps path =
     let
         ( authorName, packageName ) =
             splitName name
     in
-    PackageInfo name authorName packageName summary license version deps testDeps
+    PackageInfo name authorName packageName summary license version exposed deps testDeps path
 
 
 package : Decoder PackageInfo
 package =
-    Decode.map7 packageHelp
+    Decode.map8 packageHelp
         (field "name" string)
         (field "summary" string)
         (field "license" string)
         (field "version" Elm.Version.decoder)
+        (field "exposed-modules" exposedDecoder)
         (field "dependencies" depsDecoder)
         (field "test-dependencies" depsDecoder)
         (field "path" string)
@@ -96,3 +98,15 @@ resultsToTuple results =
         )
         ( [], [] )
         results
+
+
+
+-- Exposed Decoder
+
+
+exposedDecoder : Decoder Exposed
+exposedDecoder =
+    oneOf
+        [ map ExposedList (list string)
+        , map ExposedKeyValues (keyValuePairs (list string))
+        ]

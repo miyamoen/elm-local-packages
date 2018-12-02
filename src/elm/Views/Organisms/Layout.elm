@@ -4,25 +4,23 @@ import Element exposing (..)
 import Types exposing (..)
 import Views.Constants as Constants exposing (breakPoints)
 import Views.Organisms.Header as Header
-import Views.Organisms.Sidebar as Sidebar
+import Views.Organisms.Navigation as Navigation
 
 
 view : Model -> Element msg -> Element msg
 view model body =
     column
-        [ width fill, spacing Constants.padding ]
+        [ width fill
+        , spacing Constants.padding
+        ]
         [ Header.view model
-        , row
+        , column
             [ width (maximum breakPoints.large fill)
-            , padding Constants.padding
+            , paddingXY Constants.padding 0
             , spacing Constants.padding
             , centerX
             ]
-          <|
-            case Sidebar.view model of
-                Just sidebar ->
-                    [ body, el [ alignTop ] sidebar ]
-
-                Nothing ->
-                    [ body ]
+            [ Navigation.view model
+            , body
+            ]
         ]

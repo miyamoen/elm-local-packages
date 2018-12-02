@@ -6,7 +6,7 @@ import Element exposing (..)
 import Element.Border as Border
 import Element.Font as Font
 import Elm.Version
-import Fake
+import Fake.Packages as Fake
 import Types exposing (Package)
 import Types.Packages as Packages
 import Types.Route as Route
