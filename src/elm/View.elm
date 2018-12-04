@@ -3,6 +3,7 @@ module View exposing (view)
 import Browser exposing (Document)
 import Element exposing (..)
 import Element.Font as Font exposing (typeface)
+import SelectList
 import Types exposing (..)
 import Types.Packages as Packages
 import Types.Route as Route
@@ -15,13 +16,13 @@ import Views.Utils exposing (rootAttributes)
 
 
 view : WithKey Model -> Document Msg
-view { errors, allPackages, allDocs, route, query } =
+view { errors, allPackages, allDocs, routes, query } =
     let
         model =
             { errors = errors
             , allPackages = allPackages
             , allDocs = allDocs
-            , route = route
+            , routes = routes
             , query = query
             }
     in
@@ -31,15 +32,15 @@ view { errors, allPackages, allDocs, route, query } =
             { options = [ focusStyle <| FocusStyle Nothing Nothing Nothing ] }
             rootAttributes
           <|
-            routing model
+            routing (SelectList.selected routes) model
         ]
     }
 
 
-routing : Model -> Element Msg
-routing model =
-    Layout.view model <|
-        case model.route of
+routing : Route -> Model -> Element Msg
+routing route model =
+    Layout.view route model <|
+        case route of
             NotFoundPage url ->
                 text <| "TODO: NotFound " ++ url
 
@@ -50,10 +51,10 @@ routing model =
                 Views.Pages.Packages.view model
 
             PackagePage _ ->
-                Views.Pages.Overview.view model
+                Views.Pages.Overview.view route model
 
             ReadMePage _ ->
-                Views.Pages.ReadMe.view model
+                Views.Pages.ReadMe.view route model
 
             ModulePage _ ->
-                Views.Pages.Module.view model
+                Views.Pages.Module.view route model

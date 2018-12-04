@@ -15,8 +15,8 @@ import Views.Organisms.Breadcrumbs as Breadcrumbs
 import Views.Utils exposing (withFrame)
 
 
-view : Model -> Element msg
-view { route } =
+view : Route -> Element msg
+view route =
     row
         [ width fill
         , height <| px 50
@@ -33,7 +33,7 @@ view { route } =
 
 book : Book
 book =
-    bookWithFrontCover "Header" (withFrame <| view Fake.model)
+    bookWithFrontCover "Header" (withFrame <| view Fake.route)
 
 
 main : Bibliopola.Program

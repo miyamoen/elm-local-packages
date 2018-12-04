@@ -20,12 +20,12 @@ import Views.Constants as Constants exposing (fontSize)
 import Views.Utils exposing (withFrame)
 
 
-view : Model -> Element msg
-view model =
+view : Route -> Model -> Element msg
+view route { allPackages } =
     let
         package =
-            Route.packageKey model.route
-                |> Maybe.andThen (\key -> Packages.find key model.allPackages)
+            Route.packageKey route
+                |> Maybe.andThen (\key -> Packages.find key allPackages)
     in
     column [ width fill, spacing Constants.padding ]
         [ el [ Font.size fontSize.large ] <| text "Local Cached Versions"
@@ -52,7 +52,7 @@ versionLink package =
 
 book : Book
 book =
-    bookWithFrontCover "Overview" (view Fake.model |> withFrame)
+    bookWithFrontCover "Overview" (view Fake.route Fake.model |> withFrame)
 
 
 main : Bibliopola.Program

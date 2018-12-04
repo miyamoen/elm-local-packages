@@ -18,8 +18,8 @@ import Views.Atoms.Status as Status
 import Views.Utils exposing (withFrame)
 
 
-view : Model -> Element msg
-view { allDocs, route } =
+view : Route -> Model -> Element msg
+view route { allDocs } =
     Route.docsKey route
         |> Maybe.andThen (\key -> AllDocs.find key allDocs)
         |> Maybe.map (Status.view (.readMe >> MarkdownBlock.wrapped ""))
@@ -30,14 +30,13 @@ book : Book
 book =
     bookWithFrontCover "ReadMe"
         (view
-            { model
-                | route =
-                    Route.readMe
-                        { authorName = "arowM"
-                        , packageName = "elm-reference"
-                        , version = Elm.Version.one
-                        }
-            }
+            (Route.readMe
+                { authorName = "arowM"
+                , packageName = "elm-reference"
+                , version = Elm.Version.one
+                }
+            )
+            model
             |> withFrame
         )
 

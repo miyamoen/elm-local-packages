@@ -7,20 +7,20 @@ import Views.Organisms.Header as Header
 import Views.Organisms.Navigation as Navigation
 
 
-view : Model -> Element msg -> Element msg
-view model body =
+view : Route -> Model -> Element msg -> Element msg
+view route model body =
     column
         [ width fill
         , spacing Constants.padding
         ]
-        [ Header.view model
+        [ Header.view route
         , column
             [ width (maximum breakPoints.large fill)
             , paddingXY Constants.padding 0
             , spacing Constants.padding
             , centerX
             ]
-            [ Navigation.view model
+            [ Navigation.view route model
             , body
             ]
         ]

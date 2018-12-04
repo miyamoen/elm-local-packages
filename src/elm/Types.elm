@@ -39,7 +39,7 @@ type alias Model =
     { allPackages : List Package
     , allDocs : AllDocs
     , errors : List Error
-    , route : Route
+    , routes : SelectList Route
     , query : String
     }
 

@@ -7,6 +7,7 @@ import Browser.Navigation as Nav exposing (Key)
 import Decoder
 import Json.Decode as Decode exposing (Value)
 import Ports
+import SelectList
 import Types exposing (..)
 import Types.AllDocs as AllDocs
 import Types.Packages as Packages
@@ -30,7 +31,7 @@ init elmJsons url key =
       , allPackages = Packages.sort allPackages
       , allDocs = AllDocs.init
       , errors = List.map ElmJsonDecodeError errors
-      , route = Route.parse url
+      , routes = SelectList.singleton <| Route.parse url
       , query = ""
       }
     , Cmd.none
@@ -60,7 +61,12 @@ update msg model =
             ( model, Nav.load url )
 
         UrlChanged url ->
-            ( { model | route = Route.parse url }, Cmd.none )
+            ( { model
+                | routes =
+                    SelectList.replaceSelected (Route.parse url) model.routes
+              }
+            , Cmd.none
+            )
 
         AcceptPackageDocs (Ok docs) ->
             ( { model | allDocs = AllDocs.insert docs docs model.allDocs }

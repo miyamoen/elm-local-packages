@@ -1,4 +1,11 @@
-module Fake exposing (exposedKeyValues, exposedList, model, moduleDoc, moduleDocs)
+module Fake exposing
+    ( exposedKeyValues
+    , exposedList
+    , model
+    , moduleDoc
+    , moduleDocs
+    , route
+    )
 
 import Dict
 import Elm.Docs exposing (..)
@@ -6,6 +13,7 @@ import Elm.Type exposing (Type(..))
 import Elm.Version as Version
 import Fake.Packages exposing (packages)
 import Fake.ReadMe exposing (readMe)
+import SelectList
 import Types exposing (..)
 import Types.Packages as Packages
 
@@ -23,14 +31,18 @@ model =
                 , version = Version.one
                 }
     , errors = []
-    , route =
-        ReadMePage
-            { authorName = "arowM"
-            , packageName = "elm-reference"
-            , version = Version.one
-            }
+    , routes = SelectList.fromLists [] route []
     , query = ""
     }
+
+
+route : Route
+route =
+    ReadMePage
+        { authorName = "arowM"
+        , packageName = "elm-reference"
+        , version = Version.one
+        }
 
 
 moduleDoc : Module

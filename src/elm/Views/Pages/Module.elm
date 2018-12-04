@@ -21,8 +21,8 @@ import Views.Organisms.DocBlock as DocBlock exposing (makeInfo)
 import Views.Utils exposing (withFrame)
 
 
-view : Model -> Element msg
-view { allDocs, route } =
+view : Route -> Model -> Element msg
+view route { allDocs } =
     Route.moduleKey route
         |> Maybe.andThen (\key -> AllDocs.findModule key allDocs)
         |> Maybe.map (Status.view help)
@@ -52,15 +52,14 @@ book : Book
 book =
     bookWithFrontCover "Module"
         (view
-            { model
-                | route =
-                    Route.moduleRoute
-                        { authorName = "arowM"
-                        , packageName = "elm-reference"
-                        , version = Elm.Version.one
-                        , moduleName = "Reference"
-                        }
-            }
+            (Route.moduleRoute
+                { authorName = "arowM"
+                , packageName = "elm-reference"
+                , version = Elm.Version.one
+                , moduleName = "Reference"
+                }
+            )
+            model
             |> withFrame
         )
 

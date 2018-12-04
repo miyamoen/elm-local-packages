@@ -7,8 +7,8 @@ import Types.Route as Route
 import Views.Organisms.ModuleLinks as ModuleLinks
 
 
-view : Model -> Element msg
-view { route, allDocs, allPackages } =
+view : Route -> Model -> Element msg
+view route { allDocs, allPackages } =
     Route.docsKey route
         |> Maybe.andThen
             (\key ->
