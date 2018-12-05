@@ -1,5 +1,5 @@
 module Types exposing
-    ( WithKey, Model, Msg(..), msgToString
+    ( WithKey(..), Model, Msg(..), msgToString
     , Error(..)
     , Route(..)
     , AuthorKey, PackageKey, DocsKey, ModuleKey
@@ -31,8 +31,8 @@ import SelectList exposing (SelectList)
 import Url exposing (Url)
 
 
-type alias WithKey m =
-    { m | key : Key }
+type WithKey m
+    = WithKey Key m
 
 
 type alias Model =

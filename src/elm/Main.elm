@@ -27,57 +27,63 @@ init elmJsons url key =
                 Err decodeError ->
                     ( [ decodeError ], [] )
     in
-    ( { key = key
-      , allPackages = Packages.sort allPackages
+    ( { allPackages = Packages.sort allPackages
       , allDocs = AllDocs.init
       , errors = List.map ElmJsonDecodeError errors
       , routes = SelectList.singleton <| Route.parse url
       , query = ""
       }
+        |> WithKey key
     , Cmd.none
     )
 
 
 update : Msg -> WithKey Model -> ( WithKey Model, Cmd Msg )
-update msg model =
+update msg (WithKey key model) =
     case msg of
         NoOp ->
-            ( model, Cmd.none )
+            ( WithKey key model, Cmd.none )
 
         ClickedLink (Internal url) ->
             case Route.parse url |> Route.docsKey of
                 Just docsKey ->
-                    ( { model | allDocs = AllDocs.initKey docsKey model.allDocs }
+                    ( WithKey key
+                        { model | allDocs = AllDocs.initKey docsKey model.allDocs }
                     , Cmd.batch
                         [ Ports.fetchPackageDocs_ docsKey
-                        , Nav.pushUrl model.key <| Url.toString url
+                        , Nav.pushUrl key <| Url.toString url
                         ]
                     )
 
                 Nothing ->
-                    ( model, Nav.pushUrl model.key <| Url.toString url )
+                    ( WithKey key model, Nav.pushUrl key <| Url.toString url )
 
         ClickedLink (External url) ->
-            ( model, Nav.load url )
+            ( WithKey key model, Nav.load url )
 
         UrlChanged url ->
             ( { model
                 | routes =
                     SelectList.replaceSelected (Route.parse url) model.routes
               }
+                |> WithKey key
             , Cmd.none
             )
 
         AcceptPackageDocs (Ok docs) ->
-            ( { model | allDocs = AllDocs.insert docs docs model.allDocs }
+            ( WithKey key
+                { model | allDocs = AllDocs.insert docs docs model.allDocs }
             , Cmd.none
             )
 
         AcceptPackageDocs (Err err) ->
-            ( { model | errors = DocsDecodeError err :: model.errors }, Cmd.none )
+            ( { model | errors = DocsDecodeError err :: model.errors }
+                |> WithKey key
+            , Cmd.none
+            )
 
         NewQuery new ->
-            ( { model | query = new }, Cmd.none )
+            ( WithKey key { model | query = new }, Cmd.none )
 
 
 subscriptions : WithKey Model -> Sub Msg

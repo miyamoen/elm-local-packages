@@ -16,16 +16,7 @@ import Views.Utils exposing (rootAttributes)
 
 
 view : WithKey Model -> Document Msg
-view { errors, allPackages, allDocs, routes, query } =
-    let
-        model =
-            { errors = errors
-            , allPackages = allPackages
-            , allDocs = allDocs
-            , routes = routes
-            , query = query
-            }
-    in
+view (WithKey _ model) =
     { title = "Elm Local Packages"
     , body =
         [ layoutWith
