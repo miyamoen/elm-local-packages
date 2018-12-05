@@ -20,11 +20,11 @@ import Views.Constants as Constants exposing (fontSize)
 import Views.Utils exposing (withFrame)
 
 
-view : Route -> Model -> Element msg
-view route { allPackages } =
+view : Model -> Element msg
+view { allPackages, routes } =
     let
         package =
-            Route.packageKey route
+            Route.packageKey (SelectList.selected routes)
                 |> Maybe.andThen (\key -> Packages.find key allPackages)
     in
     column [ width fill, spacing Constants.padding ]
@@ -52,7 +52,7 @@ versionLink package =
 
 book : Book
 book =
-    bookWithFrontCover "Overview" (view Fake.route Fake.model |> withFrame)
+    bookWithFrontCover "Overview" (view Fake.model |> withFrame)
 
 
 main : Bibliopola.Program

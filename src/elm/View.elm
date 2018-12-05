@@ -3,7 +3,7 @@ module View exposing (view)
 import Browser exposing (Document)
 import Element exposing (..)
 import Element.Font as Font exposing (typeface)
-import SelectList
+import SelectList exposing (Position(..), SelectList)
 import Types exposing (..)
 import Types.Packages as Packages
 import Types.Route as Route
@@ -32,15 +32,26 @@ view { errors, allPackages, allDocs, routes, query } =
             { options = [ focusStyle <| FocusStyle Nothing Nothing Nothing ] }
             rootAttributes
           <|
-            routing (SelectList.selected routes) model
+            multiView model
         ]
     }
 
 
-routing : Route -> Model -> Element Msg
-routing route model =
-    Layout.view route model <|
-        case route of
+multiView : Model -> Element Msg
+multiView model =
+    column [ width fill, spaceEvenly ] <|
+        SelectList.selectedMap (singleView model) model.routes
+
+
+singleView : Model -> Position -> SelectList Route -> Element Msg
+singleView model position currentRoute =
+    routing <| { model | routes = currentRoute }
+
+
+routing : Model -> Element Msg
+routing model =
+    Layout.view model <|
+        case SelectList.selected model.routes of
             NotFoundPage url ->
                 text <| "TODO: NotFound " ++ url
 
@@ -51,10 +62,10 @@ routing route model =
                 Views.Pages.Packages.view model
 
             PackagePage _ ->
-                Views.Pages.Overview.view route model
+                Views.Pages.Overview.view model
 
             ReadMePage _ ->
-                Views.Pages.ReadMe.view route model
+                Views.Pages.ReadMe.view model
 
             ModulePage _ ->
-                Views.Pages.Module.view route model
+                Views.Pages.Module.view model
