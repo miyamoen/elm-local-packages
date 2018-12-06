@@ -85,8 +85,14 @@ update msg (WithKey key model) =
         NewQuery new ->
             ( WithKey key { model | query = new }, Cmd.none )
 
-        SelectRoute routes ->
-            ( WithKey key { model | routes = routes }, Cmd.none )
+        SelectColumn routes ->
+            ( WithKey key { model | routes = Debug.log "route" routes }, Cmd.none )
+
+        AddColumn ->
+            ( { model | routes = SelectList.insertAfter HomePage model.routes }
+                |> WithKey key
+            , Cmd.none
+            )
 
 
 subscriptions : WithKey Model -> Sub Msg

@@ -20,7 +20,7 @@ singleView model position currentRoute =
     el
         [ width fill
         , when (Selected == position) <| Border.width 1
-        , when (Selected /= position) <| onMouseEnter <| SelectRoute currentRoute
+        , when (Selected /= position) <| onMouseEnter <| SelectColumn currentRoute
         ]
     <|
         Routing.view { model | routes = currentRoute }

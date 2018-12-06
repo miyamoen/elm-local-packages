@@ -131,7 +131,8 @@ type Msg
     | UrlChanged Url
     | AcceptPackageDocs (Result Decode.Error DocsResponse)
     | NewQuery String
-    | SelectRoute (SelectList Route)
+    | SelectColumn (SelectList Route)
+    | AddColumn
 
 
 msgToString : Msg -> String
@@ -152,5 +153,8 @@ msgToString msg =
         NewQuery query ->
             "NewQuery: " ++ query
 
-        SelectRoute route ->
+        SelectColumn route ->
             "SelectRoute"
+
+        AddColumn ->
+            "AddColumn"
