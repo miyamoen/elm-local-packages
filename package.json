@@ -8,7 +8,7 @@
   },
   "scripts": {
     "bib": "elm-live src/elm/Views/Bib.elm --open --pushstate --start-page=bib.html --dir=public -- --output=public/bib.js",
-    "launch": "elm make src/elm/Main.elm --output=public/elm.js --debug && node src/index.js",
+    "launch": "elm make src/elm/Main.elm --output=public/elm.js && node src/index.js",
     "build": "elm make src/elm/Main.elm --optimize --output=public/elm.js",
     "minify": "elm-minify public/elm.js && mv public/elm.min.js public/elm.js",
     "test": "echo \"Error: no test specified\" && exit 1"
