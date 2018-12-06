@@ -1,13 +1,13 @@
 module Views.Utils exposing
     ( rootAttributes, font, codeFont
-    , class, id, title
+    , class, id, title, when
     , withFrame
     )
 
 {-|
 
 @docs rootAttributes, font, codeFont
-@docs class, id, title
+@docs class, id, title, when
 @docs withFrame
 
 -}
@@ -33,6 +33,15 @@ id str =
 title : String -> Attribute msg
 title str =
     htmlAttribute <| Html.Attributes.title str
+
+
+when : Bool -> Attribute msg -> Attribute msg
+when pred attr =
+    if pred then
+        attr
+
+    else
+        class ""
 
 
 withFrame : Element msg -> Element msg

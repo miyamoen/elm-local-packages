@@ -2,6 +2,8 @@ module View exposing (view)
 
 import Browser exposing (Document)
 import Element exposing (..)
+import Element.Border as Border
+import Element.Events exposing (onClick)
 import Element.Font as Font exposing (typeface)
 import SelectList exposing (Position(..), SelectList)
 import Types exposing (..)
@@ -12,7 +14,7 @@ import Views.Pages.Module
 import Views.Pages.Overview
 import Views.Pages.Packages
 import Views.Pages.ReadMe
-import Views.Utils exposing (rootAttributes)
+import Views.Utils exposing (rootAttributes, when)
 
 
 view : WithKey Model -> Document Msg
@@ -36,7 +38,14 @@ multiView model =
 
 singleView : Model -> Position -> SelectList Route -> Element Msg
 singleView model position currentRoute =
-    routing <| { model | routes = currentRoute }
+    el
+        [ width fill
+        , when (Selected == position) <| Border.width 1
+        , onClick <| SelectRoute currentRoute
+        ]
+    <|
+        routing <|
+            { model | routes = currentRoute }
 
 
 routing : Model -> Element Msg

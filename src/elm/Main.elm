@@ -85,6 +85,9 @@ update msg (WithKey key model) =
         NewQuery new ->
             ( WithKey key { model | query = new }, Cmd.none )
 
+        SelectRoute routes ->
+            ( WithKey key { model | routes = routes }, Cmd.none )
+
 
 subscriptions : WithKey Model -> Sub Msg
 subscriptions _ =
