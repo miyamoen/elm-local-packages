@@ -56,13 +56,18 @@ update msg (WithKey key model) =
         ClickedLink (Internal url) ->
             case Route.parse url |> Route.docsKey of
                 Just docsKey ->
-                    ( WithKey key
-                        { model | allDocs = AllDocs.initKey docsKey model.allDocs }
-                    , Cmd.batch
-                        [ Ports.fetchPackageDocs_ docsKey
-                        , Nav.pushUrl key <| Url.toString url
-                        ]
-                    )
+                    case AllDocs.find docsKey model.allDocs of
+                        Just _ ->
+                            ( WithKey key model, Nav.pushUrl key <| Url.toString url )
+
+                        Nothing ->
+                            ( WithKey key
+                                { model | allDocs = AllDocs.initKey docsKey model.allDocs }
+                            , Cmd.batch
+                                [ Ports.fetchPackageDocs_ docsKey
+                                , Nav.pushUrl key <| Url.toString url
+                                ]
+                            )
 
                 Nothing ->
                     ( WithKey key model, Nav.pushUrl key <| Url.toString url )
