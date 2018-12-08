@@ -2,6 +2,7 @@ module Views.Organisms.MultiColumns exposing (shelf, singleView, view)
 
 import Bibliopola exposing (..)
 import Element exposing (..)
+import Element.Background as Background
 import Element.Border as Border
 import Element.Events exposing (onMouseEnter)
 import Fake
@@ -26,6 +27,7 @@ singleView model position currentRoute =
         , scrollbarY
         , height fill
         , when (Selected == position) <| Border.innerGlow Colors.secondary 2
+        , when (Selected == position) <| Background.color Colors.cover
         , when (Selected /= position) <| onMouseEnter <| SelectColumn currentRoute
         ]
     <|
