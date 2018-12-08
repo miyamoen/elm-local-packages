@@ -100,7 +100,7 @@ update msg (WithKey key model) =
             ( WithKey key { model | routes = Debug.log "route" routes }, Cmd.none )
 
         AddColumn ->
-            ( { model | routes = SelectList.insertAfter HomePage model.routes }
+            ( { model | routes = SelectList.insertBefore HomePage model.routes }
                 |> WithKey key
             , Cmd.none
             )
