@@ -6,6 +6,8 @@
     "elm-version": "0.19.0",
     "dependencies": {
         "direct": {
+            "Gizra/elm-keyboard-event": "1.0.1",
+            "SwiftsNamesake/proper-keyboard": "4.0.0",
             "akoppela/elm-logo": "1.0.1",
             "elm/browser": "1.0.1",
             "elm/core": "1.0.2",
@@ -21,9 +23,7 @@
             "miyamoen/select-list": "4.0.0"
         },
         "indirect": {
-            "Gizra/elm-keyboard-event": "1.0.1",
             "NoRedInk/elm-simple-fuzzy": "1.0.3",
-            "SwiftsNamesake/proper-keyboard": "4.0.0",
             "elm/parser": "1.1.0",
             "elm/svg": "1.0.1",
             "elm/time": "1.0.0",

@@ -3,10 +3,13 @@ module Main exposing (init, main, subscriptions, update)
 {-| -}
 
 import Browser exposing (..)
-import Browser.Navigation as Nav exposing (Key)
+import Browser.Events
+import Browser.Navigation as Nav
 import CommandPallet
 import Decoder
-import Json.Decode as Decode exposing (Value)
+import Json.Decode as Decode exposing (Decoder, Value)
+import Keyboard.Event exposing (considerKeyboardEvent)
+import Keyboard.Key exposing (Key(..))
 import Ports
 import SelectList
 import Types exposing (..)
@@ -17,7 +20,7 @@ import Url exposing (Url)
 import View exposing (view)
 
 
-init : Value -> Url -> Key -> ( WithKey Model, Cmd Msg )
+init : Value -> Url -> Nav.Key -> ( WithKey Model, Cmd Msg )
 init elmJsons url key =
     let
         ( errors, allPackages ) =
@@ -35,7 +38,9 @@ init elmJsons url key =
       , query = ""
       , commandPallet =
             CommandPallet.init CommandPalletMsg
-                [ ( "Add Column", AddColumn ) ]
+                [ ( "Add Column (alt + t)", AddColumn )
+                , ( "Remove Column (alt + w)", RemoveColumn )
+                ]
       }
         |> WithKey key
     , Cmd.none
@@ -105,13 +110,40 @@ update msg (WithKey key model) =
             , Cmd.none
             )
 
+        RemoveColumn ->
+            ( { model
+                | routes = SelectList.attempt SelectList.delete model.routes
+              }
+                |> WithKey key
+            , Cmd.none
+            )
+
 
 subscriptions : WithKey Model -> Sub Msg
-subscriptions (WithKey _ { commandPallet }) =
+subscriptions (WithKey _ model) =
     Sub.batch
-        [ CommandPallet.subscriptions commandPallet
+        [ Browser.Events.onKeyDown keyDecoder
         , Ports.acceptPackageDocs_ AcceptPackageDocs
         ]
+
+
+keyDecoder : Decoder Msg
+keyDecoder =
+    considerKeyboardEvent
+        (\{ altKey, keyCode } ->
+            case ( altKey, keyCode ) of
+                ( True, P ) ->
+                    Just <| CommandPalletMsg CommandPallet.showUpMsg
+
+                ( True, W ) ->
+                    Just RemoveColumn
+
+                ( True, T ) ->
+                    Just AddColumn
+
+                _ ->
+                    Nothing
+        )
 
 
 main : Program Value (WithKey Model) Msg

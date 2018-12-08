@@ -136,6 +136,7 @@ type Msg
     | NewQuery String
     | SelectColumn (SelectList Route)
     | AddColumn
+    | RemoveColumn
 
 
 msgToString : Msg -> String
@@ -153,7 +154,7 @@ msgToString msg =
         CommandPalletMsg _ ->
             "CommandPalletMsg"
 
-        AcceptPackageDocs docsResponseErrorDecodeResult ->
+        AcceptPackageDocs _ ->
             "AcceptPackageDocs"
 
         NewQuery query ->
@@ -164,3 +165,6 @@ msgToString msg =
 
         AddColumn ->
             "AddColumn"
+
+        RemoveColumn ->
+            "RemoveColumn"
