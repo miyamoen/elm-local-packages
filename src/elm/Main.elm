@@ -4,6 +4,7 @@ module Main exposing (init, main, subscriptions, update)
 
 import Browser exposing (..)
 import Browser.Navigation as Nav exposing (Key)
+import CommandPallet
 import Decoder
 import Json.Decode as Decode exposing (Value)
 import Ports
@@ -32,6 +33,9 @@ init elmJsons url key =
       , errors = List.map ElmJsonDecodeError errors
       , routes = SelectList.singleton <| Route.parse url
       , query = ""
+      , commandPallet =
+            CommandPallet.init CommandPalletMsg
+                [ ( "Add Column", AddColumn ) ]
       }
         |> WithKey key
     , Cmd.none
@@ -70,6 +74,13 @@ update msg (WithKey key model) =
             , Cmd.none
             )
 
+        CommandPalletMsg subMsg ->
+            let
+                ( new, cmd ) =
+                    CommandPallet.update subMsg model.commandPallet
+            in
+            ( WithKey key { model | commandPallet = new }, cmd )
+
         AcceptPackageDocs (Ok docs) ->
             ( WithKey key
                 { model | allDocs = AllDocs.insert docs docs model.allDocs }
@@ -96,8 +107,11 @@ update msg (WithKey key model) =
 
 
 subscriptions : WithKey Model -> Sub Msg
-subscriptions _ =
-    Ports.acceptPackageDocs_ AcceptPackageDocs
+subscriptions (WithKey _ { commandPallet }) =
+    Sub.batch
+        [ CommandPallet.subscriptions commandPallet
+        , Ports.acceptPackageDocs_ AcceptPackageDocs
+        ]
 
 
 main : Program Value (WithKey Model) Msg

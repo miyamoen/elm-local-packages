@@ -22,6 +22,7 @@ module Types exposing
 
 import Browser exposing (UrlRequest)
 import Browser.Navigation exposing (Key)
+import CommandPallet
 import Dict exposing (Dict)
 import Elm.Docs exposing (Module)
 import Elm.Version exposing (Version)
@@ -41,6 +42,7 @@ type alias Model =
     , errors : List Error
     , routes : SelectList Route
     , query : String
+    , commandPallet : CommandPallet.Model Msg
     }
 
 
@@ -129,6 +131,7 @@ type Msg
     = NoOp
     | ClickedLink UrlRequest
     | UrlChanged Url
+    | CommandPalletMsg CommandPallet.Msg
     | AcceptPackageDocs (Result Decode.Error DocsResponse)
     | NewQuery String
     | SelectColumn (SelectList Route)
@@ -146,6 +149,9 @@ msgToString msg =
 
         UrlChanged url ->
             "UrlChanged"
+
+        CommandPalletMsg _ ->
+            "CommandPalletMsg"
 
         AcceptPackageDocs docsResponseErrorDecodeResult ->
             "AcceptPackageDocs"

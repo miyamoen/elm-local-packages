@@ -17,14 +17,20 @@
             "elm-explorations/markdown": "1.0.0",
             "mdgriffith/elm-ui": "1.1.0",
             "miyamoen/bibliopola": "2.0.1",
+            "miyamoen/elm-command-pallet": "1.0.0",
             "miyamoen/select-list": "4.0.0"
         },
         "indirect": {
+            "Gizra/elm-keyboard-event": "1.0.1",
+            "NoRedInk/elm-simple-fuzzy": "1.0.3",
+            "SwiftsNamesake/proper-keyboard": "4.0.0",
             "elm/parser": "1.1.0",
             "elm/svg": "1.0.1",
             "elm/time": "1.0.0",
             "elm/virtual-dom": "1.0.2",
-            "miyamoen/tree-with-zipper": "1.0.0"
+            "miyamoen/tree-with-zipper": "1.0.0",
+            "turboMaCk/any-dict": "1.0.1",
+            "turboMaCk/any-set": "1.0.0"
         }
     },
     "test-dependencies": {

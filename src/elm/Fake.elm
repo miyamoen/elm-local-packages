@@ -5,22 +5,25 @@ module Fake exposing
     , moduleDoc
     , moduleDocs
     , route
+    , routes
     )
 
+import CommandPallet
 import Dict
 import Elm.Docs exposing (..)
 import Elm.Type exposing (Type(..))
 import Elm.Version as Version
 import Fake.Packages exposing (packages)
 import Fake.ReadMe exposing (readMe)
-import SelectList
+import SelectList exposing (SelectList)
 import Types exposing (..)
 import Types.Packages as Packages
 
 
 model : Model
 model =
-    { allPackages = Packages.sort packages
+    { commandPallet = CommandPallet.init CommandPalletMsg []
+    , allPackages = Packages.sort packages
     , allDocs =
         Dict.singleton ( "arowM", "elm-reference", "1.0.0" ) <|
             Success
@@ -31,7 +34,7 @@ model =
                 , version = Version.one
                 }
     , errors = []
-    , routes = SelectList.fromLists [] route []
+    , routes = routes
     , query = ""
     }
 
@@ -43,6 +46,19 @@ route =
         , packageName = "elm-reference"
         , version = Version.one
         }
+
+
+routes : SelectList Route
+routes =
+    SelectList.fromLists
+        [ HomePage
+        ]
+        route
+        [ PackagePage
+            { authorName = "arowM"
+            , packageName = "elm-reference"
+            }
+        ]
 
 
 moduleDoc : Module

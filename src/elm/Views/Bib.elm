@@ -11,6 +11,7 @@ import Views.Organisms.Breadcrumbs
 import Views.Organisms.Error
 import Views.Organisms.Header
 import Views.Organisms.ModuleLinks
+import Views.Organisms.MultiColumns
 import Views.Organisms.PackageSummary
 import Views.Pages.Module
 import Views.Pages.Overview
@@ -37,6 +38,7 @@ shelf =
                 |> addShelf Views.Organisms.PackageSummary.shelf
                 |> addShelf Views.Organisms.Error.shelf
                 |> addBook Views.Organisms.Header.book
+                |> addShelf Views.Organisms.MultiColumns.shelf
             )
         |> addShelf
             (emptyShelf "Pages"
