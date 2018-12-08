@@ -16,7 +16,7 @@
   "author": "miyamoen",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "carlo": "^0.9.20",
+    "carlo": "^0.9.41",
     "globby": "^8.0.1",
     "jsonfile": "^5.0.0"
   }
