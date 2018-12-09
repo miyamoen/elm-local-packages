@@ -26,8 +26,7 @@ singleView model position currentRoute =
         , alignTop
         , scrollbarY
         , height fill
-        , when (Selected == position) <| Border.innerGlow Colors.secondary 2
-        , when (Selected == position) <| Background.color Colors.cover
+        , when (Selected /= position) <| Background.color Colors.cover
         , when (Selected /= position) <| onMouseEnter <| SelectColumn currentRoute
         ]
     <|

@@ -30,7 +30,7 @@ secondary =
 
 cover : Color
 cover =
-    rgb255 252 255 236
+    rgb255 187 187 187
 
 
 black : Color
