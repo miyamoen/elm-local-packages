@@ -1,6 +1,6 @@
 {
   "name": "elm-local-packages",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "description": "Launch elm packages site with local elm caches.",
   "repository": "github:miyamoen/elm-local-packages",
   "bin": {
@@ -15,6 +15,10 @@
   },
   "author": "miyamoen",
   "license": "BSD-3-Clause",
+  "keywords": [
+    "elm",
+    "devtool"
+  ],
   "dependencies": {
     "carlo": "^0.9.41",
     "globby": "^8.0.1",
