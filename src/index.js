@@ -102,7 +102,9 @@ const startup = async () => {
 
   const app = await carlo.launch();
 
-  app.on("exit", () => process.exit());
+  app.mainWindow().on("close", () => {
+    process.exit();
+  });
   app.serveFolder(path.join(__dirname, "..", "public"));
 
   await app.exposeFunction("readElmJsons", readElmJsons(packagesDirPath_));
